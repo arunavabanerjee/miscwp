@@ -18,6 +18,24 @@ order by name:
 <?php endwhile; ?>
 <?php wp_reset_query(); ?>
 
+using counter
+         <?php $i= 0; query_posts('showposts=5&cat=5&order=ASC'); ?>
+         <?php while (have_posts()) : the_post(); 
+  	     $c_pid = get_the_ID(); $c_title = get_the_title(); $c_excerpt = get_the_excerpt();
+	     $c_permalink = esc_url( get_permalink() ); 
+	     if (has_post_thumbnail($c_pid)):	
+                $fimage = wp_get_attachment_image_src(get_post_thumbnail_id($c_pid), 'single-post-thumbnail'); 
+	     endif; ?>
+         <?php if ($i == 0) { ?><div class="col-md-4 col-sm-4"> <?php } ?>
+         <?php if ($i > 0){ ?> <div class="col-md-4 col-sm-4 service-border"> <?php } ?>
+           <div class="service-image"><img src="<?php echo $fimage[0]; ?>" alt="" /></div>
+           <div class="serviceHeading"><?php echo $c_title; ?></div>
+           <p class="serviceTxt"><?php echo $c_excerpt; ?></p>  
+         </div>
+         <?php $i++; endwhile; ?>
+         <?php wp_reset_query(); ?>  
+
+
 code edit
 <?php $pg_12 = get_post(12); $id = $pg_12->ID;
    $address = get_post_meta($id, 'Address');
