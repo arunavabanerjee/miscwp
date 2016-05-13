@@ -1,3 +1,4 @@
+Order by date
 <?php query_posts('showposts=20&cat=6&orderby=date&order=ASC'); ?>
          	<?php while (have_posts()) : the_post(); 
   			$c_pid = get_the_ID(); $c_title = get_the_title(); 
