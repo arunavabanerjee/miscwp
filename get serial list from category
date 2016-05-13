@@ -1,0 +1,8 @@
+<?php query_posts('showposts=20&cat=6&orderby=date&order=ASC'); ?>
+         	<?php while (have_posts()) : the_post(); 
+  			$c_pid = get_the_ID(); $c_title = get_the_title(); 
+			$c_permalink = esc_url( get_permalink() ); 
+			$bimage = get_post_meta($c_pid, 'Banner Image'); ?>
+		<li><img src="<?php echo $bimage[0]; ?>" /></li>
+		<?php endwhile; ?>
+<?php wp_reset_query(); ?>
