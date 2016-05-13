@@ -17,3 +17,18 @@ order by name:
      <div><img src="<?php echo $bimage[0]; ?>" class="img-responsive"></div>
 <?php endwhile; ?>
 <?php wp_reset_query(); ?>
+
+code edit
+<?php $pg_12 = get_post(12); $id = $pg_12->ID;
+   $address = get_post_meta($id, 'Address');
+   $copyright = get_post_meta($id, 'Copyright');
+   $email = get_post_meta($id, 'Email');
+   $facebook = get_post_meta($id, 'Facebook');
+   $google = get_post_meta($id, 'Google');
+   $phone = get_post_meta($id, 'Phone');
+   $twitter = get_post_meta($id, 'Twitter');
+   $website = get_post_meta($id, 'Website');
+?>
+
+
+
