@@ -5,4 +5,4 @@
 			$bimage = get_post_meta($c_pid, 'Banner Image'); ?>
 		<li><img src="<?php echo $bimage[0]; ?>" /></li>
 		<?php endwhile; ?>
-<?php wp_reset_query(); ?>
+<?php wp_reset_query(); ?> 
