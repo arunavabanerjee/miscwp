@@ -5,5 +5,15 @@ Order by date
 			$c_permalink = esc_url( get_permalink() ); 
 			$bimage = get_post_meta($c_pid, 'Banner Image'); ?>
 		<li><img src="<?php echo $bimage[0]; ?>" /></li>
-		<?php endwhile; ?>
+<?php endwhile; ?>
 <?php wp_reset_query(); ?> 
+
+order by name:
+<?php query_posts('showposts=20&cat=4&order=ASC'); ?>
+     <?php while (have_posts()) : the_post(); 
+  	     $c_pid = get_the_ID(); $c_title = get_the_title(); 
+	     $c_permalink = esc_url( get_permalink() ); 
+	     $bimage = get_post_meta($c_pid, 'Banner Image'); ?>
+     <div><img src="<?php echo $bimage[0]; ?>" class="img-responsive"></div>
+<?php endwhile; ?>
+<?php wp_reset_query(); ?>
