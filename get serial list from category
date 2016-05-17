@@ -57,8 +57,16 @@ function add_favicon() {
 add_action( 'wp_head', 'add_favicon' ); //front end
 add_action( 'admin_head', 'add_favicon' ); //admin end
 
-
-
+custom search no uncategorized posts
+-------------------------------------
+function search_filter($query) {
+  if ( !is_admin() && $query->is_main_query() ) {
+    if ($query->is_search) {
+      $query->set('cat', '-1');
+    }
+  }
+}
+add_action('pre_get_posts','search_filter');
 
 
 
