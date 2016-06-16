@@ -1,0 +1,14 @@
+
+Wordpress
+
+WordPress does include a few built-in sections in customizer. 
+If you want to use any of the existing, built-in ones, you don't need to declare them with add_section(). 
+Instead, refer to them by name. The following sections are built-in:
+
+title_tagline - Site Title & Tagline (and Site Icon in WP 4.3+)
+colors - Colors
+header_image - Header Image
+background_image - Background Image
+nav - Navigation
+static_front_page - Static Front Page
+
