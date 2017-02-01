@@ -41,6 +41,39 @@ function get_post_breadcrumbs(){
 }
 /***/
 
+/***/
+
+function get_post_breadcrumbs(){
+ $bcrumbs = array(); $html = ''; 
+ $swisssitechkr = multisite_globalizer();
+ $cpost = get_post(get_the_ID()); 
+
+ //create crumbs based on current post  
+ for($id=$cpost->ID; $id != 0; ){ 
+   $ppost = get_post($id); 
+   $menuItem = wp_get_nav_menu_items('main-menu', 
+                 array('posts_per_page' => -1,'meta_key' => '_menu_item_object_id','meta_value' => $ppost->ID ));
+   array_unshift($bcrumbs, $menuItem);
+   $id = $menuItem[0]->menu_item_parent;
+ }
+ 
+ //return html form of the breadcrumbs
+ if(!empty($bcrumbs)){ 
+  $html .= '<div class="inner_bredcrumb"><nav aria-label="You are here:" role="navigation"><ul class="breadcrumbs page_bredcrunb">';
+  if ( $swisssitechkr==1 ) { $html .= '<li><a href="<?php echo home_url(); ?>">Home</a></li>'; }
+  if ( $swisssitechkr==2 ) { $html .= '<li><a href="<?php echo home_url(); ?>">Beijing</a></li>'; }
+  if ( $swisssitechkr==3 ) { $html .= '<li><a href="<?php echo home_url(); ?>">Shanghai</a></li>'; }
+  if ( $swisssitechkr==4 ) { $html .= '<li><a href="<?php echo home_url(); ?>">Guangzhou</a></li>'; }
+  if ( $swisssitechkr==5 ) { $html .= '<li><a href="<?php echo home_url(); ?>">Hong Kong</a></li>'; } 
+  foreach($bcrumbs as $crumb){ 
+   $html .= '<li><a href="'.$crumb[0]->url.'">'.$crumb[0]->post_title.'</a></li>';
+  }                     
+  $html .= '</ul></nav></div>'; 
+ }
+ return $html;
+}
+/***/
+
 
 
 
