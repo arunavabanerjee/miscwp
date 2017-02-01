@@ -13,7 +13,33 @@ nav - Navigation
 static_front_page - Static Front Page 
 
 
+/***/
 
+function get_post_breadcrumbs(){
+ $bcrumbs = array(); $html = ''; 
+ $cpost = get_post(get_the_ID()); 
+
+ //create crumbs based on current post  
+ for($id=$cpost->ID; $id != 0; ){ 
+   $ppost = get_post($id); 
+   $menuItem = wp_get_nav_menu_items('main-menu', 
+                 array('posts_per_page' => -1,'meta_key' => '_menu_item_object_id','meta_value' => $ppost->ID ));
+   array_unshift($bcrumbs, $menuItem);
+   $id = $menuItem[0]->menu_item_parent;
+ }
+ 
+ //return html form of the breadcrumbs
+ if(!empty($bcrumbs)){ 
+  $html .= '<div class="inner_bredcrumb"><nav aria-label="You are here:" role="navigation"><ul class="breadcrumbs page_bredcrunb">';
+  $html .= '<li><a href="<?php echo home_url(); ?>">Home</a></li>';
+  foreach($bcrumbs as $crumb){ 
+   $html .= '<li><a href="'.$crumb[0]->url.'">'.$crumb[0]->post_title.'</a></li>';
+  }                     
+  $html .= '</ul></nav></div>'; 
+ }
+ return $html;
+}
+/***/
 
 
 
