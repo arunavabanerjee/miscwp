@@ -81,6 +81,7 @@
            //var marker = new BMap.Marker(point);
            var infoWindow = new BMap.InfoWindow(sContent);
            map.centerAndZoom(point, 15);
+           map.enableScrollWheelZoom();  
            map.addOverlay(marker);
            marker.addEventListener("click", function(){
               this.openInfoWindow(infoWindow);
@@ -90,8 +91,8 @@
            });
         }); 
       });
-                            //  });
-                            </script>
+   //  });
+   </script>
 
 
 
