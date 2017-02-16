@@ -208,6 +208,12 @@ function get_post_breadcrumbs(){
 }
 /***/
 
+// email php
+$general_email = isset($_REQUEST['general_email'])?addslashes($_REQUEST['general_email']):"";
+$uemail = filter_var($general_email, FILTER_SANITIZE_EMAIL);
+if(!filter_var($uemail, FILTER_VALIDATE_EMAIL) === false){ $general_email = $uemail; } else{ $general_email = ""; } 
+
+
 /***/
 
 function get_post_breadcrumbs(){
