@@ -26,7 +26,7 @@ if(!empty($changes)){
 						
  $headers = "MIME-Version: 1.0" . "\r\n";
  $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";					
- $headers .= "From: info@bei.swisscham.org\r\n";
+ $headers .= "From: info@cham.org\r\n";
  @mail($to, $subject, $message, $headers);
 
 }
@@ -84,7 +84,7 @@ if(!empty($changes)){
 						
  $headers = "MIME-Version: 1.0" . "\r\n";
  $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";					
- $headers .= "From: info@bei.swisscham.org\r\n";
+ $headers .= "From: info@cham.org\r\n";
  @mail($to, $subject, $message, $headers);
 }
 
