@@ -1,10 +1,29 @@
  
+<script>
+jQuery(document).ready(function(){ 
+
+/*jQuery.ajax({
+  method: "GET",
+  url: "some.php",
+  cache: false,
+  data: { name: "John", location: "Boston" }
+})
+.done(function( msg ) {
+    alert( "Data Saved: " + msg );
+});*/
+
+});
+</script>
+
+========================================================================
+
 $vars = $_GET; $metaqry = array(); 
 $metaqry["relation"] = "AND";
 foreach($vars as $key => $val){ 
   $intrim = array( 'key' => $key, 'value' => $val, 'compare' => '=' ); array_push($metaqry, $intrim); }
 $args = array('numberposts' => -1,'post_type' => 'post','meta_query' => $metaqry);
 query_posts($args);
+
 ---------------------------
 
 
