@@ -24,6 +24,8 @@ foreach($vars as $key => $val){
 $args = array('numberposts' => -1,'post_type' => 'post','meta_query' => $metaqry);
 query_posts($args);
 
+echo $GLOBALS['wp_query']->request; 
+
 ---------------------------
 
 
