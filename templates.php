@@ -19,6 +19,16 @@ jQuery(document).ready(function(){
 
 $vars = $_GET; $metaqry = array(); 
 $metaqry["relation"] = "AND";
+foreach($vars as $key => $val){
+  if($key == 'earliest_arrivals' || $key == 'latest_returns' || $key == 'duration' || $key == 'post_type' ){ continue; }
+  $intrim = array( 'key' => $key, 'value' => $val, 'compare' => '=' ); array_push($metaqry, $intrim); }
+$args = array('numberposts' => -1,'post_type' => 'post', 'cat' => 72, 'meta_query' => $metaqry); //print_r($args);
+query_posts($args); 
+
+-------------------------------------------
+
+$vars = $_GET; $metaqry = array(); 
+$metaqry["relation"] = "AND";
 foreach($vars as $key => $val){ 
   $intrim = array( 'key' => $key, 'value' => $val, 'compare' => '=' ); array_push($metaqry, $intrim); }
 $args = array('numberposts' => -1,'post_type' => 'post','meta_query' => $metaqry);
