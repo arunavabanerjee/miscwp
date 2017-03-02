@@ -1,4 +1,14 @@
-        //--mail being sent to admin email. 
+ 
+$vars = $_GET; $metaqry = array(); 
+$metaqry["relation"] = "AND";
+foreach($vars as $key => $val){ 
+  $intrim = array( 'key' => $key, 'value' => $val, 'compare' => '=' ); array_push($metaqry, $intrim); }
+$args = array('numberposts' => -1,'post_type' => 'post','meta_query' => $metaqry);
+query_posts($args);
+---------------------------
+
+
+//--mail being sent to admin email. 
         if(!empty($changes)){
          $to  = 'arunava@sketchwebsolutions.com'; //$to  = $email;
 	 $subject = 'Changes Made To User Profile:'.$family_name.'-'.$given_name;
