@@ -21,6 +21,17 @@
         $args = array('numberposts' => -1,'post_type' => 'post', 'cat' => 72, 'meta_query' => $metaqry); 
         query_posts($args); //echo $GLOBALS['wp_query']->request;
       ?>
+
+   <?php // display posts with meta value sorted
+     $metaqry = array(); $metaqry["relation"] = "AND";  
+     $intrim = array( 'key' => "location", 'value' => $loc, 'compare' => '==' ); array_push($metaqry, $intrim);
+     //$args = array('numberposts' => -1,'post_type' => 'post', 'cat' => 72, 'meta_query' => $metaqry);
+    $args = array('numberposts' => -1,'post_type' => 'post', 'cat' => 72, 'meta_query' => $metaqry, 'orderby'  => 'meta_value_num','meta_key' => 'price', 'order' => 'ASC');
+     query_posts($args); //echo $GLOBALS['wp_query']->request;
+   ?>
+	    
+	    
+	    
       <?php global $wp_query; 
        if( $wp_query->found_posts > 0 ) { ?>
 
