@@ -276,3 +276,24 @@ if(!empty($changes)){
  @mail($to, $subject, $message, $headers);
 }
 
+//====================================================================================================
+	
+// check if the restaurant has filled all orders. 
+$restaurant = get_post($restaurant_store); 
+$orders = $wpdb->get_results('SELECT * FROM `quickfood_order` WHERE `restaurant_id` = "'.$restaurant->ID.'" ORDER BY ids DESC LIMIT 1', ARRAY_A); 
+$lastOrderTime =  $orders[0]['createds'];  echo $lastOrderTime; 
+$currentTime = time(); echo $currentTime; 
+
+$orderPerHr = get_field('orders_per_hour', $restaurant->ID); 
+$maxOrderPerHr = get_field('max_no_order_per_hour', $restaurant->ID);
+
+// update the field to check for max orders
+if($orderPerHr < $maxOrderPerHr){ 
+   $inc = $orderPerHr + 1; update_field('orders_per_hour', $inc , $restaurant->ID); 
+} else{ 
+   $inc = 0; update_field('orders_per_hour', $inc , $restaurant->ID); 
+}
+
+	
+	
+	
