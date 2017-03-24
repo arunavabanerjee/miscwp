@@ -1,5 +1,12 @@
 
 
+add_filter( 'wp_mail_from', 'your_email' ); 
+function your_email( $original_email_address ) { return 'your@email-address.com'; }
+
+
+add_filter( 'wp_mail_from', 'your_email' ); 
+function your_email( $original_email_address ) { return get_option('admin_email'); }
+
 //---------- wordpress widget
 /**
  * @author James Lafferty
