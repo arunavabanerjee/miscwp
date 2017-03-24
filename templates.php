@@ -32,8 +32,6 @@
      query_posts($args); //echo $GLOBALS['wp_query']->request;
    ?>
 	    
-	    
-	    
       <?php global $wp_query; 
        if( $wp_query->found_posts > 0 ) { ?>
 
