@@ -1,3 +1,10 @@
+
+//reg exp - match floating point
+  $detailfood     = $_GET['detailfood']; 
+  $detailfood1 = preg_replace('/(GBP)(\d*\.\d+)/', '', $detailfood);
+
+
+
 <?php 
 get_header();
 ?>
