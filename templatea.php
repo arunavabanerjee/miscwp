@@ -1,9 +1,16 @@
+<?php 
+//change email address and sender name
+add_filter( 'wp_mail_from', 'your_email' );
+function your_email( $original_email_address ) { return get_option('admin_email'); } 
+
+add_filter('wp_mail_from_name', 'new_mail_from_name');
+function new_mail_from_name($old) { return 'Munch On Deck Site'; }
+
 
 //reg exp - match floating point
   $detailfood     = $_GET['detailfood']; 
   $detailfood1 = preg_replace('/(GBP)(\d*\.\d+)/', '', $detailfood);
-
-
+?>
 
 <?php 
 get_header();
