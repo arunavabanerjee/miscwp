@@ -265,6 +265,26 @@ function get_post_breadcrumbs(){
 }
 /***/
 
+//------------------------------------------------------------------------------------------------
+
+<?php if (qtranxf_getLanguage() == 'ar') { ?>
+<script>
+    jQuery(document).ready(function () {
+        var current_URL = jQuery(location).attr('href');
+        url = current_URL.replace('/ar/', '/en/')
+        jQuery('.languages-selection ul li a').attr('href', url)
+    });
+</script>
+<?php } elseif (qtranxf_getLanguage() == 'en') { ?>
+<script>
+    jQuery(document).ready(function() {
+        var current_URL = jQuery(location).attr('href');
+        url = current_URL.replace('/en/', '/ar/')
+        jQuery('.languages-selection ul li a').attr('href', url)
+    });
+</script>
+<?php } ?>
+
 
 
 
