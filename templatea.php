@@ -1,3 +1,13 @@
+<?php
+
+$args = array(
+    'post_type' => 'post',
+    'orderby'   => 'rand'
+    'posts_per_page' => 5,
+);
+$the_query = new WP_Query( $args );
+?>
+
 <?php 
 // Function to change email address
 function wpb_sender_email( $original_email_address ) {
