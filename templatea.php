@@ -1,5 +1,16 @@
-<?php
 
+<script>
+$(document).ready(function(){ 
+  $('#exTab1 .nav-pills li').each(function(){ 
+    $(this).removeClass('active'); 
+    if( $(this).children('a').attr('href') == '#all-projects'){ $(this).addClass('active'); }
+    $('.tab-content .tab-pane').each(function(){ $(this).removeClass('active'); }); 
+    $('.tab-content #all-projects').addClass('active');  
+  }); 
+});
+</script>
+
+<?php
 $args = array(
     'post_type' => 'post',
     'orderby'   => 'rand'
