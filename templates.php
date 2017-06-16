@@ -1,4 +1,15 @@
  
+//--- select posts based on today date 
+<?php $today = date('Ymd'); $metaqry = array(); $metaqry["relation"] = "AND";  
+      $intrim = array( 'key' => 'date', 'value' => $today, 'compare' => '==' ); array_push($metaqry, $intrim);
+  $args = array('post_type' => 'event_management', 'posts_per_page' => 10, 'meta_query' => $metaqry); 
+  query_posts($args); 
+  while ( have_posts() ) : the_post(); ?>
+	<?php the_ID(); ?>
+<?php endwhile; 
+wp_reset_query(); ?>
+
+
 //---wordpress template
 <!-- Container -->
 <div class="container posts-conainer-loop <?php echo $layout; ?>">
