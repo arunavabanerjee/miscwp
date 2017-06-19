@@ -1,4 +1,79 @@
 
+/**
+ * create the modal data based on the ID of the event
+ */
+add_action( 'wp_ajax_nopriv_action_modaldata', 'action_modaldata' );
+add_action( 'wp_ajax_action_modaldata', 'action_modaldata' );
+function action_modaldata(){
+  $gameID = $_REQUEST['id']; //echo "Game Id:".$gameID;
+  $currPost = get_post($gameID);
+  $address = get_post_meta($gameID, 'address', true);
+  $date = date("l F d",get_post_meta($gameID, 'date', true));
+  $stime = date("g:i a", get_post_meta($gameID, 'start_time', true));
+  $etime = date("g:i a", get_post_meta($gameID, 'end_time', true));
+  $type = get_post_meta($gameID, 'type', true);
+  $skill = get_post_meta($gameID, 'skill', true);
+  $price = get_post_meta($gameID, 'price', true);
+  $map = get_post_meta($gameID, 'map', true); 
+
+  $html = '<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" 
+           aria-hidden="true">';
+  $html .= '<div class="modal-dialog" role="document"><div class="modal-content">';
+  $html .= '<div class="modal-header"><h5 class="modal-title" id="exampleModalLongTitle">'.get_the_title($gameID).'</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>';
+  $html .= '<div class="modal-body">';
+   
+  $html .= $address .'<br/>';
+  $html .= $date .'<br/>';
+  $html .= $stime .' - '. $etime .'<br/>';
+  $html .= $type .'<br/>';
+  $html .= $skill .'<br/>';
+  $html .= $price .'<br/>';
+  $html .= $map .'<br/>'; 
+  $html .= '<a href="'.bloginfo('url').'/register/" data-id='.$id.' class="btn game-full">Reserve A Spot</a>';
+
+  $html .= '</div><div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="button" class="btn btn-primary">Save changes</button></div>';
+
+  $html .= '</div></div></div>';
+
+  echo $html;
+  //echo 'revamping request successful';
+  die(); // stop executing script
+}
+
+
+
+//---custom.js
+//checks the click on the anchor of the table
+$(document).on("click", '.calendar-table .padding0 .sub-table a', function(event) { 
+ var id = $(this).attr('data-id');
+ //enter id to revamp the modal
+ $.ajax({  
+   url: frontendajaxurl.ajaxurl,  
+   method : "POST",  
+   dataType: "html",
+   data:{ 
+	'action':'action_modaldata',
+        'id':id,
+   },
+   success:function(response){
+     console.log('modal success'); 
+     $('.display_modal').html(response); 
+     $('.display_modal #exampleModalLong').modal('show');
+   }
+ }); 
+});
+
+//template.php
+<!-- Modal section - dynamically add modal-->
+<section class="display_modal"></section>
+<!-- end Modal section --> 
+
+
+//-----------------------------
 <?php $today = date('Ymd'); $metaqry = array(); $metaqry["relation"] = "AND";  
            $intrim = array( 'key' => 'date', 'value' => $today, 'compare' => '==' ); array_push($metaqry, $intrim);
 	   $args = array('post_type' => 'event_management', 'posts_per_page' => 10, 
