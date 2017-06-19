@@ -1,4 +1,17 @@
 
+<?php $today = date('Ymd'); $metaqry = array(); $metaqry["relation"] = "AND";  
+           $intrim = array( 'key' => 'date', 'value' => $today, 'compare' => '==' ); array_push($metaqry, $intrim);
+	   $args = array('post_type' => 'event_management', 'posts_per_page' => 10, 
+			 'tax_query' => array( array( 'taxonomy' => 'region', 'field' => 'id',
+					      	      'terms' => 36, 'include_children' => false, ) ),
+			 'meta_query' => $metaqry); 
+           query_posts($args); 
+	   while ( have_posts() ) : the_post(); ?>
+		<?php the_ID(); ?>
+<?php endwhile; 
+  wp_reset_query(); ?>
+
+//------------------
 //-- functions.php
 wp_enqueue_script( 'custom-script', get_template_directory_uri() . '/js/custom.js', array( 'jquery' ), false, true );
 wp_localize_script( 'custom-script', 'frontendajaxurl', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
