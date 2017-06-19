@@ -17,6 +17,52 @@ wp_enqueue_script( 'custom-script', get_template_directory_uri() . '/js/custom.j
 wp_localize_script( 'custom-script', 'frontendajaxurl', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
 //--- custom.js
+//---uses document ready to load change
+$(document).ready(function(){
+ //change event of the dropdown
+ $('#select-region').trigger('change');
+ alert('change event triggered'); 
+
+});
+
+//uses the change region to revamp games table on home page
+$('#select-region').change(function(){
+   var getRegionID = $('#select-region').val(); //alert(getRegionID);
+   var getRegionText = $('#select-region option:selected').text(); 
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_newrevamptable',
+        'regionID':getRegionID,
+      },
+      success:function(response){
+          console.log('success'); 
+	  //$('.calendar-section .changetable').html() 
+	  $(".calendar-table").find(".padding0").html( response );
+      }
+   }); 
+
+   //ajax_url ='http://lab-1.sketchdemos.com/P943_Basketball/wp-admin/admin-ajax.php';
+   /*ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+   $.post(ajax_url, {
+        action: 'action_revamptable',  
+        type:"POST",
+        regionID:getRegionID, 
+        }, 
+	function (response) { 
+          $(".calendar-table").find(".padding0").html( response );    
+          //console.log(response); //return false;
+          //$('.right-ber').html(response);                    
+   	}
+    );*/
+ 
+});
+//------------------------
+
 //uses the change region to revamp games table on home page
 $('#select-region').change(function(){
    var getRegionID = $('#select-region').val(); //alert(getRegionID);
