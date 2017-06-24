@@ -1,4 +1,129 @@
 
+///--custom.js
+//--------------
+//games page
+//--------------
+//uses the change region to revamp games table on home page
+$('.game-section .select-region').change(function(){
+   var getRegionID = $('.game-section .select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.game-section .select-region option:selected').text(); 
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_gamesrevamptable',
+        'regionID':getRegionID,
+      },
+      success:function(response){
+          console.log('success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.game-section .changetable').html(tablehtml);
+	  $(".game-section").find(".changegametable").html( response );
+      }
+   }); 
+
+   //ajax_url ='http://lab-1.sketchdemos.com/P943_Basketball/wp-admin/admin-ajax.php';
+   /*ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+   $.post(ajax_url, {
+        action: 'action_revamptable',  
+        type:"POST",
+        regionID:getRegionID, 
+        }, 
+	function (response) { 
+          $(".calendar-table").find(".padding0").html( response );    
+          //console.log(response); //return false;
+          //$('.right-ber').html(response);                    
+   	}
+    );*/
+});
+
+//checks the click on the anchor of the table
+$(document).on("click", '.game-table .table a', function(event) { 
+
+ var id = $(this).attr('data-id');
+
+ //enter id to revamp the modal
+ $.ajax({  
+   url: frontendajaxurl.ajaxurl,  
+   method : "POST",  
+   dataType: "html",
+   data:{ 
+	'action':'action_modaldata',
+        'id':id,
+   },
+   success:function(response){
+     console.log('modal success'); 
+     $('.games_display_modal').html(response); 
+     $('.games_display_modal #exampleModalLong').modal('show');
+   }
+ }); 
+});
+
+
+///--functions.php
+/**
+ * revamping the games table
+ */
+add_action( 'wp_ajax_nopriv_action_gamesrevamptable', 'action_gamesrevamptable' );
+add_action( 'wp_ajax_action_gamesrevamptable', 'action_gamesrevamptable' );
+function action_gamesrevamptable() {
+  $html = ''; // variable to return
+  $regionID = $_REQUEST['regionID']; //echo "Region:".$regionID;
+  $current_date = date('j'); $number_of_days_curr_month = date('t'); $current_month = date('n'); 
+
+  //create table from the current date to the current month
+  for($cnt = $current_date; $cnt <= $number_of_days_curr_month; $cnt++){
+    $cDate = date('Ymd',mktime(0,0,0,($current_month),$cnt,date('Y')));
+ 
+    //get the list of posts for the query ordered by time
+    $metaqry = array(); $metaqry["relation"] = "AND";  
+    $intrim = array( 'key' => 'date', 'value' => $cDate, 'compare' => '==' ); array_push($metaqry, $intrim);
+    $args = array('post_type' => 'event_management', 'posts_per_page' => 10, 
+		  'meta_key' => 'start_time', 'order_by' => 'meta_value_num', 'order' => 'ASC',
+		  'tax_query' => array( array( 'taxonomy' => 'region', 'field' => 'id',
+					'terms' => $regionID, 'include_children' => false, ) ),
+		  'meta_query' => $metaqry); 
+    query_posts($args); 
+    
+    //if posts found list
+    if(have_posts()) :
+      $html .= '<div class="game-table table-responsive"><table class="table"><tr>';
+      $html .= '<th>'.date('D M j',mktime(0,0,0,($current_month),$cnt,date('Y'))).'</th>';
+      $html .= '<th></th><th></th><th></th><th></th><th></th></tr>';
+      while ( have_posts() ) : the_post();
+     	$id = get_the_ID(); 
+     	$noSeats = get_post_meta($id, 'number_of_seats', true); 
+     	$currBookings = get_post_meta($id, 'current_bookings', true); 
+        $html .= '<tr><td>'.date('F j, Y',mktime(0,0,0,($current_month),$cnt,date('Y'))).'</td>';
+     	$html .= '<td>'.date("g:i a", get_post_meta($id, 'start_time', true)).'</td>'; 
+     	$html .= '<td>'.get_the_title().'</td>';
+     	$html .= '<td>'.get_post_meta($id, 'price', true).'</td>';
+     	$html .= '<td>'.get_post_meta($id, 'type', true).'</td>';
+     	if($noSeats != ""){
+       	  if($currBookings == "" || $noSeats > $currBookings){
+            $html .= '<td><a href="#" data-id='.$id.' class="btn play-game">PLAY GAME</a></td></tr>';
+          }
+          elseif($noSeats == $currBookings){
+            $html .= '<td><a href="#" data-id='.$id.' class="btn game-full">FULL</a></td></tr>';
+          }	
+        } else{
+           $html .= '<td><a href="#" data-id='.$id.' class="btn non-allocated" disabled="disabled">NO SETUP</a></td></tr>';
+        }
+      endwhile;
+    endif;
+    wp_reset_query(); 
+  } // end for
+
+  echo $html;
+  //echo 'revamping request successful';
+  die(); // stop executing script
+}
+
+
+
 //theme functions
 <?php 
   $terms = get_terms(array('taxonomy' => 'region', 'hide_empty' => false, 'order' => 'ASC', 'order_by' => 'term_id'));
