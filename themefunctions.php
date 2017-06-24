@@ -1,4 +1,29 @@
 
+//theme functions
+<?php 
+  $terms = get_terms(array('taxonomy' => 'region', 'hide_empty' => false, 'order' => 'ASC', 'order_by' => 'term_id'));
+  $regionID = $terms[0]->term_id; //echo "Region:".$regionID;
+  $today = date('Ymd'); $number_of_days_curr_month = date('t'); $current_month = date('n'); 
+  $end_of_month = date('Ymd',mktime(0,0,0,($current_month),$number_of_days_curr_month,date('Y'))); 
+  $metaqry = array(); $metaqry["relation"] = "AND";  
+  $intrim = array( 'key' => 'date', 'value' => array($today, $end_of_month), 'compare' => 'BETWEEN', 
+		   'type'=>'DATE', 'order' => 'ASC', 'order_by' => 'meta_value_num'); 
+  array_push($metaqry, $intrim);
+  $args = array('post_type' => 'event_management', 'posts_per_page' => 10,
+		'tax_query' => array( array( 'taxonomy' => 'region', 'field' => 'id',
+				      	     'terms' => $regionID, 'include_children' => false, ) ),
+		'meta_query' => $metaqry); 
+  query_posts($args);
+  if(have_posts()) :
+   while ( have_posts() ) : the_post(); 
+     $id = get_the_ID(); echo $id;
+   endwhile;
+  else :
+  endif;
+  wp_reset_query();
+?>
+///----------------------------------------------------------------------------
+
 //in functions.php
 wp_enqueue_script( 'twentysixteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20160816', true );
 wp_enqueue_script( 'custom-script', get_template_directory_uri() . '/js/custom.js', array( 'jquery' ), false, true );
