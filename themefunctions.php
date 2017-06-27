@@ -1,4 +1,155 @@
 
+///----script
+/* global screenReaderText */
+/**
+ * Theme functions file.
+ *
+ * Contains handlers for navigation and widget area.
+ */
+
+$(document).ready(function(){
+ $('.calendar-section #select-region').trigger('change');
+});
+
+$('body .page-template-games-tmpl').ready(function(){ 
+ $('.game-section .select-region').trigger('change'); 
+});
+
+//changes to the table on games page
+$('.game-section .calendar .calendar-day-np').click(function(){ 
+  var $chkbox = $(this).find('input[type="checkbox"]');
+  var status = $chkbox.prop('checked'); 
+  var val = $chkbox.prop('value'); alert(status); alert(val); 
+  $('.game-section .select-region').trigger('change');
+});
+
+
+//uses the change region to revamp games table on home page
+$('.calendar-section #select-region').change(function(){
+   var getRegionID = $('.calendar-section #select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.calendar-section #select-region option:selected').text(); 
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_newrevamptable',
+        'regionID':getRegionID,
+      },
+      success:function(response){
+          console.log('success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.calendar-section .changetable').html(tablehtml);
+	  $(".calendar-table").find(".padding0").html( response );
+      }
+   }); 
+
+   //ajax_url ='http://lab-1.sketchdemos.com/P943_Basketball/wp-admin/admin-ajax.php';
+   /*ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+   $.post(ajax_url, {
+        action: 'action_revamptable',  
+        type:"POST",
+        regionID:getRegionID, 
+        }, 
+	function (response) { 
+          $(".calendar-table").find(".padding0").html( response );    
+          //console.log(response); //return false;
+          //$('.right-ber').html(response);                    
+   	}
+    );*/
+});
+
+//checks the click on the anchor of the table
+$(document).on("click", '.calendar-table .padding0 .sub-table a', function(event) { 
+
+ var id = $(this).attr('data-id');
+
+ //enter id to revamp the modal
+ $.ajax({  
+   url: frontendajaxurl.ajaxurl,  
+   method : "POST",  
+   dataType: "html",
+   data:{ 
+	'action':'action_modaldata',
+        'id':id,
+   },
+   success:function(response){
+     console.log('modal success'); 
+     $('.display_modal').html(response); 
+     $('.display_modal #exampleModalLong').modal('show');
+   }
+ }); 
+});
+
+//--------------
+//games page
+//--------------
+//uses the change region to revamp games table on home page
+$('.game-section .select-region').change(function(){
+   var getRegionID = $('.game-section .select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.game-section .select-region option:selected').text(); 
+   var checkboxes = $('input[type="checkbox"][name="dates"]:checked'); var dates = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); dates += chkbx.value +','; } 
+   alert(dates);
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_gamesrevamptable',
+        'regionID':getRegionID,
+	'dates':dates,
+      },
+      success:function(response){
+          console.log('success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.game-section .changetable').html(tablehtml);
+	  $(".game-section").find(".changegametable").html( response );
+      }
+   }); 
+
+   //ajax_url ='http://lab-1.sketchdemos.com/P943_Basketball/wp-admin/admin-ajax.php';
+   /*ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+   $.post(ajax_url, {
+        action: 'action_revamptable',  
+        type:"POST",
+        regionID:getRegionID, 
+        }, 
+	function (response) { 
+          $(".calendar-table").find(".padding0").html( response );    
+          //console.log(response); //return false;
+          //$('.right-ber').html(response);                    
+   	}
+    );*/
+});
+
+//checks the click on the anchor of the table
+$(document).on("click", '.game-table .table a', function(event) { 
+
+ var id = $(this).attr('data-id');
+
+ //enter id to revamp the modal
+ $.ajax({  
+   url: frontendajaxurl.ajaxurl,  
+   method : "POST",  
+   dataType: "html",
+   data:{ 
+	'action':'action_modaldata',
+        'id':id,
+   },
+   success:function(response){
+     console.log('modal success'); 
+     $('.games_display_modal').html(response); 
+     $('.games_display_modal #exampleModalLong').modal('show');
+   }
+ }); 
+});
+
+
 ///--custom.js
 //--------------
 //games page
