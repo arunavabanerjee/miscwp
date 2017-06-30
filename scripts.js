@@ -1,3 +1,246 @@
+
+//---- functions.php
+wp_enqueue_script( 'twentysixteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20160816', true );
+wp_enqueue_script( 'custom-script', get_template_directory_uri() . '/js/custom.js', array( 'jquery' ), false, true );
+wp_localize_script( 'custom-script', 'frontendajaxurl', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+
+
+/**
+ * Theme functions file.
+ * Contains handlers for navigation and widget area.
+ */
+
+$(document).ready(function(){
+ $('.calendar-section #select-region').trigger('change');
+});
+
+//view button click on home page
+$('.page-template-frontpage-tmp .calendar-section .calendar-table .view-btn').click(function(){ 
+  var getSelRegion = $('.page-template-frontpage-tmp .calendar-section #select-region').val(); //alert(getSelRegion);
+  var siteurl = window.location.href; 
+  window.location.href = siteurl + "games/?region=" + getSelRegion;
+});
+
+//games page on load
+$('body .page-template-games-tmpl').ready(function(){ 
+ //if the url contains a parameter 
+ if( window.location.href.indexOf("?") == -1 ){  
+   $('.game-section .select-region').trigger('change'); 
+ }
+ if( window.location.href.indexOf("?") > -1 ){
+   var searchReg = window.location.search.substr(1);
+   var region = searchReg.split('='); //alert(region[1]);
+   $('.game-section .select-region').val(region[1]).change();
+   $('.game-section .select-region').trigger('change'); 
+ }
+});
+
+//changes to the table on games page
+$('.game-section .calendar .calendar-day-np').click(function(){ 
+  var $chkbox = $(this).find('input[type="checkbox"]');
+  var status = $chkbox.prop('checked'); 
+  var val = $chkbox.prop('value'); //alert(status); alert(val); 
+  $('.game-section .select-region').trigger('change');
+});
+
+
+//------------
+// home page
+//------------
+//uses the change region to revamp games table on home page
+$('.calendar-section #select-region').change(function(){
+   var getRegionID = $('.calendar-section #select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.calendar-section #select-region option:selected').text(); 
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_newrevamptable',
+        'regionID':getRegionID,
+      },
+      success:function(response){
+          console.log('success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.calendar-section .changetable').html(tablehtml);
+	  $(".calendar-table").find(".padding0").html( response );
+      }
+   }); 
+
+   //ajax_url ='http://lab-1.sketchdemos.com/P943_Basketball/wp-admin/admin-ajax.php';
+   /*ajax_url = '<?php echo admin_url('admin-ajax.php'); ?>';
+   $.post(ajax_url, {
+        action: 'action_revamptable',  
+        type:"POST",
+        regionID:getRegionID, 
+        }, 
+	function (response) { 
+          $(".calendar-table").find(".padding0").html( response );    
+          //console.log(response); //return false;
+          //$('.right-ber').html(response);                    
+   	}
+    );*/
+});
+
+//checks the click on the anchor of the table
+$(document).on("click", '.calendar-table .padding0 .sub-table a', function(event) { 
+
+ var id = $(this).attr('data-id');
+
+ //enter id to revamp the modal
+ $.ajax({  
+   url: frontendajaxurl.ajaxurl,  
+   method : "POST",  
+   dataType: "html",
+   data:{ 
+	'action':'action_modaldata',
+        'id':id,
+   },
+   success:function(response){
+     console.log('modal success'); 
+     $('.display_modal').html(response); 
+     $('.display_modal #exampleModalLong').modal('show');
+   }
+ }); 
+});
+
+//--------------
+//games page
+//--------------
+//uses the change region to revamp games table on home page
+$('.game-section .select-region').change(function(){
+   var getRegionID = $('.game-section .select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.game-section .select-region option:selected').text(); 
+   var checkboxes = $('input[type="checkbox"][name="dates"]:checked'); var dates = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); dates += chkbx.value +','; } //alert(dates);
+
+   //refresh the skill level and game type parameters.
+   $('input[type="checkbox"][name="skill-level"]:checked').each(function(){ $(this).removeAttr('checked'); });
+   $('input[type="checkbox"][name="game-type"]:checked').each(function(){ $(this).removeAttr('checked'); }); 
+   
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_gamesrevamptable',
+        'regionID':getRegionID,
+	'dates':dates,
+      },
+      success:function(response){
+          console.log('gametable revamp success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.game-section .changetable').html(tablehtml);
+	  $(".game-section").find(".changegametable").html( response );
+
+	// calling ajax for the location updation
+	$.ajax({  
+      		url: frontendajaxurl.ajaxurl,  
+		method : "POST",  
+      		dataType: "html",
+      		data:{ 
+		   'action':'action_locationrevamptable',
+        	   'regionID':getRegionID,
+      		},
+      		success:function(response){
+          	   console.log('location revamp success');
+	  	   $('.game-section').find('#2a .game-tab-cont').html(response);
+		}
+ 	});
+
+      }
+   });
+});
+
+$('input[type="checkbox"][name="skill-level"]').click(function(){ 
+   var getRegionID = $('.game-section .select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.game-section .select-region option:selected').text(); 
+   var checkboxes = $('input[type="checkbox"][name="dates"]:checked'); var dates = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); dates += chkbx.value +','; } //alert(dates);
+   var checkboxes = $('input[type="checkbox"][name="skill-level"]:checked'); var skilllevels = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); skilllevels += chkbx.value +','; } //alert(skilllevels);  
+   var checkboxes = $('input[type="checkbox"][name="game-type"]:checked'); var gametypes = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); gametypes += chkbx.value +','; } //alert(gametypes); 
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method : "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_gamesrevamptableGametypes',
+        'regionID':getRegionID,
+	'dates':dates,
+	'skills':skilllevels,
+	'gametypes':gametypes,
+      },
+      success:function(response){
+          console.log('success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.game-section .changetable').html(tablehtml);
+	  $(".game-section").find(".changegametable").html( response );
+      }
+   }); 
+});
+
+$('input[type="checkbox"][name="game-type"]').click(function(){
+   var getRegionID = $('.game-section .select-region').val(); //alert(getRegionID);
+   var getRegionText = $('.game-section .select-region option:selected').text(); 
+   var checkboxes = $('input[type="checkbox"][name="dates"]:checked'); var dates = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); dates += chkbx.value +','; } //alert(dates); 
+   var checkboxes = $('input[type="checkbox"][name="skill-level"]:checked'); var skilllevels = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); skilllevels += chkbx.value +','; } //alert(skilllevels);  
+   var checkboxes = $('input[type="checkbox"][name="game-type"]:checked'); var gametypes = '';
+   for (i=0; i < checkboxes.length; i++){ var chkbx = checkboxes.get(i); gametypes += chkbx.value +','; } //alert(gametypes); 
+
+   // input region code to revamp the table
+   $.ajax({  
+      url: frontendajaxurl.ajaxurl,  
+      method: "POST",  
+      dataType: "html",
+      data:{ 
+	'action':'action_gamesrevamptableGametypes',
+        'regionID':getRegionID,
+	'dates':dates,
+	'skills':skilllevels,
+	'gametypes':gametypes,
+      },
+      success:function(response){
+          console.log('game success'); 
+	  var tablehtml = getRegionText + ' Games';
+	  $('.game-section .changetable').html(tablehtml);
+	  $(".game-section").find(".changegametable").html( response );
+      }
+   }); 
+});
+
+
+//checks the click on the anchor of the table
+$(document).on("click", '.game-table .table a', function(event) { 
+
+ var id = $(this).attr('data-id');
+
+ //enter id to revamp the modal
+ $.ajax({  
+   url: frontendajaxurl.ajaxurl,  
+   method : "POST",  
+   dataType: "html",
+   data:{ 
+	'action':'action_modaldata',
+        'id':id,
+   },
+   success:function(response){
+     console.log('modal success'); 
+     $('.games_display_modal').html(response); 
+     $('.games_display_modal #exampleModalLong').modal('show');
+   }
+ }); 
+});
+
+
 //---add to cart 
 
 					<script type="text/javascript">
