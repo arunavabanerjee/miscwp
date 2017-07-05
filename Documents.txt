@@ -1,4 +1,11 @@
 
+//-------------
+  $date_format = get_option( 'date_format' );
+  $time_format = get_option( 'time_format' );
+  $cTime = date("{$time_format}", current_time( 'timestamp' )); 
+  
+  
+
 
 add_filter( 'wp_mail_from', 'your_email' ); 
 function your_email( $original_email_address ) { return 'your@email-address.com'; }
