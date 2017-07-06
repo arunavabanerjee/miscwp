@@ -1,4 +1,62 @@
 
+//--------------------------------------------functions.php
+add_action( 'wp_ajax_nopriv_action_newrevamptable', 'action_newrevamptable' );
+add_action( 'wp_ajax_action_newrevamptable', 'action_newrevamptable' );
+function action_newrevamptable() {
+  $regionID = $_REQUEST['regionID']; //echo "Region:".$regionID;
+  $html = '';
+  $today = date('Ymd'); $cTime = current_time( 'timestamp' ); 
+
+  $metaqry = array(); $metaqry["relation"] = "AND";  
+  $intrim = array( 'key' => 'date', 'value' => $today, 'compare' => '==' ); array_push($metaqry, $intrim);
+  $args = array('post_type' => 'event_management', 'posts_per_page' => 10, 
+		'tax_query' => array( array( 'taxonomy' => 'region', 'field' => 'id',
+				      	     'terms' => $regionID, 'include_children' => false, ) ),
+		'meta_query' => $metaqry); 
+  query_posts($args); 
+
+  $html .= '<table class="table sub-table">';
+  if(have_posts()) :
+   while ( have_posts() ) : the_post(); 
+     $id = get_the_ID(); 
+     $noSeats = get_post_meta($id, 'number_of_seats', true); 
+     $currBookings = get_post_meta($id, 'current_bookings', true); 
+     $rTime = get_post_meta($id, 'remove_game_time', true); 
+     $pDate = get_post_meta($id, 'date', true); 
+     $rTimestamp = strtotime(date('Y-m-d g:i', strtotime($pDate.' '.$rTime))); 
+ 
+     $html .= '<tr><td>'.date("g:i a", get_post_meta($id, 'start_time', true)).'</td>'; 
+     $html .= '<td>'.get_the_title().'</td>';
+     $html .= '<td>'.get_post_meta($id, 'skill', true).'</td>';
+     $html .= '<td>'.get_post_meta($id, 'type', true).'</td>';
+     if($noSeats != ""){
+       if($currBookings == "" || $noSeats > $currBookings){
+         $html .= '<td><a href="#" data-id='.$id.' class="btn play-game"'; 
+         if($rTimestamp < $cTime){ $html .= ' style="background:#919191;" disabled="true" '; }
+         $html .= '>PLAY GAME</a></td></tr>';
+       }
+       elseif($noSeats == $currBookings){
+         $html .= '<td><a href="#" data-id='.$id.' class="btn game-full" style="background:#EEEEEE;" disabled="true">FULL</a></td></tr>';
+       }	
+     } else{
+       $html .= '<td><a href="#" data-id='.$id.' class="btn non-allocated" disabled="disabled">NO SETUP</a></td></tr>';
+     }
+   endwhile;
+  else :
+     $html .= '<tr><td></td><td></td><td> No Games Scheduled. Please Check Back Soon. </td><td></td><td></td></tr>';
+  endif;
+
+  $html .= '</table>'; 
+  wp_reset_query(); 
+
+  echo $html;
+  //echo 'revamping request successful';
+  die(); // stop executing script
+}
+
+
+
+
 //functions.php
 add_action( 'wp_ajax_nopriv_action_newrevamptable', 'action_newrevamptable' );
 add_action( 'wp_ajax_action_newrevamptable', 'action_newrevamptable' );
