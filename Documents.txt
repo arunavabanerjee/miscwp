@@ -1,5 +1,13 @@
 
 //-------------
+<?php
+echo chr(163);
+printf("%c", 163);
+echo "&pound;"; //preferred for HTML
+?>
+
+
+//-------------
   $date_format = get_option( 'date_format' );
   $time_format = get_option( 'time_format' );
   $cTime = date("{$time_format}", current_time( 'timestamp' )); 
