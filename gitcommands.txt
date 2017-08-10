@@ -1,0 +1,48 @@
+git ls-files				- shows the files that git is tracking
+git log						- shows the commits with the latest commit on top
+git reset HEAD <filename>	- to unstage the commit and leave the file tracked
+git checkout -- <filename> 	- to discard changes in the file in current dir and revert back to the file in the git repo
+git log --online --graph --decorate --all	- shows the commits in a beautiful way
+git config --global alias.hist "log --online --graph --decorate --all" 		- will replace the long command in the "" to the word alias.hist
+git config --global --list 	- will list the aliases
+git hist					- use the alias name hist for "log --online --graph --decorate --all"
+git hist -- <filename> 		- will apply the alias command only to the specified file
+git mv <filename> <newfilename>		- git renames the file and staged for commit
+git rm <filename>			- git will remove the file and change will be staged for commit
+git add -u 					- let git know about the deletion (infact rename) of a file which was done using bash commands and stage the change
+git add -A or git add --all	- will let git stage the files that have been modified using the bash commands
+git remote -v				- To check the address of remote destination
+git remote add <remote name> <url>	- Add the URL with the reference name of remote repository (usually 'origin')
+git remote set-url <name> <ssh or https url>
+git push -u <remote name> <branch name | master> --tags - push the changes to 'origin' on branch 'master' with tags
+git push -u <remote name> <branch name> - pushes the changes on branch created on local to remote
+git checkout -b <branch name>- create and switch to the specified branch name
+git push -u <remote name> <branch name>					- 
+git checkout <branch name>	 - switch branch to master
+git merge <branch name>		 - merge the changes of <branch name> with the master
+git branch -a				 - list the remote branches
+git branch -d <branch name>	 - delete the branch locally
+git fetch -p 				 - list any pruned branches
+git fetch					 - list branches from repo
+git pull -all				 - pulls all changes to their respective branches
+git push <remote name> :<branch name>	 - delete the branch specified after the : from the remote repository
+
+---------------------------------------------------------
+steps to remove a folder from local git index and not local directory
+git rm -r --cached <folder name>
+git commit -m "Removed folder from repository"
+git push origin <branch name>
+-----------------------------------------
+git branch <branch name>		-	creates a branch
+git checkout <branch name>		- 	switch to new branch
+git add -all 					- 	add the changed files on the branch
+git checkout master				- 	change to master branch
+git merge <branch name>			- 	merges the branch with master
+git branch -D <branch name>		- 	deletes the branch
+---------------------------------------------
+
+git checkout dmgr2      # gets you "on branch dmgr2"
+git fetch origin        # gets you up to date with origin
+git merge origin/master
+
+ 
