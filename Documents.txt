@@ -1,4 +1,20 @@
 
+
+$('.add-to-cart-button').click(function(){ alert('hi') });
+$('.add-to-cart-button').click(function(){ 
+   var currId = $(this).attr('id');
+   $.each('#detail-'+currId+' .popup-box-td .popup-box-div .one', function() { console.log(this); });
+}); 
+
+
+     if (!$(this).(input[ type = "checkbox" ]').is(':checked')) {
+       /*$('#detail-'+currId+' .popup-box-td .box-details .one .option-choice-header').css({'background':'#F00','color':'#FFF'  })*/
+       /*return false;*/
+     } else{
+       /*$('.option-choice-header').css({'background':'none','color':'#A1CAF1' })
+     }
+
+
 //-------------
 <?php
 echo chr(163);
