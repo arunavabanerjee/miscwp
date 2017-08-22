@@ -5,14 +5,26 @@ $('.add-to-cart-button').click(function(){
    var currId = $(this).attr('id');
    $.each('#detail-'+currId+' .popup-box-td .popup-box-div .one', function() { console.log(this); });
 }); 
+if (!$(this).(input[ type = "checkbox" ]').is(':checked')) {
+  /*$('#detail-'+currId+' .popup-box-td .box-details .one .option-choice-header').css({'background':'#F00','color':'#FFF' })*/
+  /*return false;*/
+} else{
+  /*$('.option-choice-header').css({'background':'none','color':'#A1CAF1' })
+}
+
+$('.add-to-cart-button').click(function(){ 
+ var currId = $(this).attr('id');
+ $('#detail-'+currId+' .popup-box-td .popup-box-div .one').each( function() { //console.log(this);
+  if(! $(this).find('input[ type = "checkbox" ]').is(':checked') ){ 
+   $('#detail-'+currId+' .popup-box-td .box-details .one .option-choice-header').css({'background':'#F00','color':'#FFF' });
+   return false;
+  } else{
+   $('#detail-'+currId+' .popup-box-td .box-details .one .option-choice-header').css({'background':'none','color':'#A1CAF1'});
+  }
+ });
+}); 
 
 
-     if (!$(this).(input[ type = "checkbox" ]').is(':checked')) {
-       /*$('#detail-'+currId+' .popup-box-td .box-details .one .option-choice-header').css({'background':'#F00','color':'#FFF'  })*/
-       /*return false;*/
-     } else{
-       /*$('.option-choice-header').css({'background':'none','color':'#A1CAF1' })
-     }
 
 
 //-------------
