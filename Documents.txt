@@ -1,4 +1,7 @@
 
+cp -rfp ../../html/.[^.]* . -- all hidden files 
+
+
  //check if all one options have been selected
  $('#detail-'+thisID+' .popup-box-td .popup-box-div .one').each( function() { 
     //console.log(this);
