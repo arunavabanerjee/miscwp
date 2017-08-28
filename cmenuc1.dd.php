@@ -1,4 +1,24 @@
 
+        //check if all one options have been selected
+        var ocheckflg = 1;  
+        $('#detail-'+thisID+' .popup-box-td .popup-box-div .one').each( function() { 
+           var checkflg = 0;           
+           $(this).find('input[type="checkbox"]').each(function(){ 
+             if($(this).is(':checked')){ checkflg = 1; }
+           });
+           if(checkflg == 0){
+             $(this).find('.option-choice-header').css({'background':'#F00','color':'#FFF' }); 
+             ocheckflg = 0;
+           } else { 
+             $(this).find('.option-choice-header').css({'background':'none','color':'#A1CAF1' });
+           }
+        });
+
+        //return if checkflg is 0, console.log(ocheckflg);
+        if(ocheckflg == 0){ return false; } else { ocheckflg = 0; }
+
+---------------------------------------------------------------------------------
+
 <?php 
 get_header();
 ?>
