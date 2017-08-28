@@ -1,8 +1,24 @@
 
+$url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=DN17%202HG&destinations=DN17%202HJ&mode=driving&language=en-EN&sensor=false";
+
+$data   = @file_get_contents($url);
+$result = json_decode($data, true);
+//print_r($result);  //outputs the array
+
+$distance = array( // converts the units
+    "meters" => $result["rows"][0]["elements"][0]["distance"]["value"],
+    "kilometers" => $result["rows"][0]["elements"][0]["distance"]["value"] / 1000,
+    "yards" => $result["rows"][0]["elements"][0]["distance"]["value"] * 1.0936133,
+    "miles" => $result["rows"][0]["elements"][0]["distance"]["value"] * 0.000621371
+);
+
+print_r($distance);
+
+-----------------------------------------------------------------------------------------
+
 cp -rfp ../../html/.[^.]* . -- all hidden files 
 
-
- //check if all one options have been selected
+//check if all one options have been selected
  $('#detail-'+thisID+' .popup-box-td .popup-box-div .one').each( function() { 
     //console.log(this);
     $(this).children('.chk-bx').each(function(){ 
