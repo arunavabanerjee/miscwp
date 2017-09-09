@@ -1,3 +1,46 @@
+
+<?php
+add_action( 'woocommerce_thankyou', 'addOrderToWallet', 10, 1 );
+function addOrderToWallet( $order_id ){
+  $norder = wc_get_order( $order_id );
+  $norder_items = $norder->get_items(); 
+  $cUser = get_userdata(get_current_user_id()); 
+ 
+  foreach ($norder_items as $nitem_id => $nitem_data) {
+    if( $nitem_id == 1042 ){
+     // Get the item line total
+     $item_total = $norder->get_item_meta($nitem_id, '_line_total', true);
+     //get the current wallet price
+     $curramount = get_user_meta( $cUser->ID, "wc_wallet", true);
+     if($curramount == ''){ $curramount = 0.0; $curramount = $curramount + $item_total; }
+     else{  $curramount = $curramount + $item_total; }
+     //update user meta
+     update_user_meta( $cUser->ID, "wc_wallet", $curramount ); 
+    }
+  }
+}
+
+?>
+
+<?php
+  // Getting the order object "$order"
+  $norder = wc_get_order( $order_id );
+  // Getting the items in the order
+  $norder_items = $order->get_items();
+  // Iterating through each item in the order
+  foreach ($norder_items as $nitem_id => $nitem_data) {
+    // Get the product name
+    $product_name = $item_data['name'];
+    // Get the item quantity
+    $item_quantity = $order->get_item_meta($item_id, '_qty', true);
+    // Get the item line total
+    $item_total = $order->get_item_meta($item_id, '_line_total', true);
+
+    // Displaying this data (to check)
+    echo 'Product name: '.$product_name.' | Quantity: '.$item_quantity.' | Item total: '. $item_total;
+
+?>
+
 <?php
 /**
  * Twenty Sixteen functions and definitions
