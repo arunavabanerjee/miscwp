@@ -1,4 +1,26 @@
 
+=====================================
+
+             <?php
+            $args = array('taxonomy' => 'category', 'orderby' => 'ID', 'order' => 'DESC', 'parent' => 6, 'hide_empty' => 0, );
+            $categories = get_terms('category', $args); //var_dump($terms); 
+
+             
+            //$args = array('child_of' => 6, 'hierarchical' => 0, 'depth' => 0, 'hide_empty' => FALSE, 'orderby' => 'ID', 'order' => 'desc');
+            //$categories = get_categories( $args ); 
+            $count=1;
+            foreach($categories as $category) { 
+                ?>
+                
+            <div class="item <?php if($count==1) { ?> active <?php } ?>"><a a data-toggle="tab" href="#menu<?php echo $count;?>"><?php echo $category->name;?></a></div>
+           <?php 
+           $count=$count+1;;
+               } ?>
+
+
+
+==================================
+
 Wordpress
 
 WordPress does include a few built-in sections in customizer. 
