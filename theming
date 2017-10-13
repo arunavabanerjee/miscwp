@@ -1,4 +1,89 @@
 
+===============================================================
+
+		       <?php
+			    $args = array('orderby' => 'ID', 'order' => 'DESC', 'parent' => 14, 'hide_empty' => true, );
+                            $categories = get_terms('category', $args); //var_dump($terms); 
+		       ?>
+
+                        <ul class="nav nav-tabs">
+
+			<?php $count=1; $counted = array();
+                          foreach($categories as $category) { 
+                            $pargs = array('post_type' => 'highlight','post_status' => 'publish', 'category' => $category->term_id,); 
+                            $posts_array = get_posts( $pargs ); if(count($posts_array) == 0){ continue; }
+                            array_push($counted,$category->term_id);  
+                          }                         
+                          var_dump($counted);
+
+
+                          foreach($categories as $category) { 
+                            $pargs = array('post_type' => 'highlight','post_status' => 'publish', 'category' => $category->term_id,); 
+                            $posts_array = get_posts( $pargs ); if(count($posts_array) == 0){ continue; }
+                            array_push($counted,$category->term_id);  
+                          foreach($categories as $categoryOther){
+                            $innerpargs = array('post_type' => 'highlight','post_status' => 'publish', 'category' => $category->term_id,); 
+                            $inner_posts_array = get_posts( $innerpargs ); if(count($posts_array) == 0){ continue; }
+                            if(in_array($categoryOther->term_id,$counted)){ continue; } 
+                         ?>
+                         <li class="active">
+                           <a data-toggle="tab" href="#matchOne">
+                             <ul>
+                               <li><?php echo $category->name; ?></li>
+                               <li>VS</li>
+                               <li><?php echo $categoryOther->name;?></li>
+                             </ul>
+                           </a>
+                         </li>
+           		<?php $count=$count+1; 
+               		}} ?>
+
+                            <!--<li class="active">
+                                <a data-toggle="tab" href="#matchOne">
+                                    <ul>
+                                        <li>School A</li>
+                                        <li>VS</li>
+                                        <li>School B</li>
+                                    </ul>
+                                </a>
+                            </li>
+                              <li><a data-toggle="tab" href="#matchTwo">
+                                     <ul>
+                                        <li>School c</li>
+                                        <li>VS</li>
+                                        <li>School d</li>
+                                    </ul> 
+                                  </a>
+                              </li>
+                              <li>
+                                  <a data-toggle="tab" href="#matchThree">
+                                      <ul>
+                                        <li>School e</li>
+                                        <li>VS</li>
+                                        <li>School f</li>
+                                    </ul>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a data-toggle="tab" href="#matchFour">
+                                     <ul>
+                                        <li>School g</li>
+                                        <li>VS</li>
+                                        <li>School h</li>
+                                    </ul> 
+                                  </a>
+                              </li>
+                              <li>
+                                  <a data-toggle="tab" href="#matchFive">
+                                      <ul>
+                                        <li>School i</li>
+                                        <li>VS</li>
+                                        <li>School j</li>
+                                    </ul>
+                                  </a>
+                              </li>-->
+                        </ul>                          
+
 ==========================================
 
 <?php $args = array(
