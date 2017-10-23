@@ -1,4 +1,41 @@
 
+function prefix_movie_rewrite_rule() {
+    add_rewrite_rule( 'movie/([^/]+)/photos', 'index.php?movie=$matches[1]&photos=yes', 'top' );
+    add_rewrite_rule( 'movie/([^/]+)/videos', 'index.php?movie=$matches[1]&videos=yes', 'top' );
+}
+ 
+add_action( 'init', 'prefix_movie_rewrite_rule' );
+
+function prefix_register_query_var( $vars ) {
+    $vars[] = 'photos';
+    $vars[] = 'videos';
+ 
+    return $vars;
+}
+ 
+add_filter( 'query_vars', 'prefix_register_query_var' );
+
+function prefix_url_rewrite_templates() {
+ 
+    if ( get_query_var( 'photos' ) && is_singular( 'movie' ) ) {
+        add_filter( 'template_include', function() {
+            return get_template_directory() . '/single-movie-image.php';
+        });
+    }
+ 
+    if ( get_query_var( 'videos' ) && is_singular( 'movie' ) ) {
+        add_filter( 'template_include', function() {
+            return get_template_directory() . '/single-movie-video.php';
+        });
+    }
+}
+ 
+add_action( 'template_redirect', 'prefix_url_rewrite_templates' );
+
+
+
+----------------------------------------------------------------------------------------------
+
  ["query_vars"]=> array(64) { 
  ["numberposts"]=> int(-1) ["category"]=> int(0) 
  ["orderby"]=> string(4) "date" ["order"]=> string(4) "DESC" ["include"]=> array(0) { } 
