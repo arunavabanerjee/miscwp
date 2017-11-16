@@ -1091,4 +1091,512 @@ jQuery('#gallery_02 li').on('click', function(){
 
 <?php get_footer( ); ?>
 
+---------------------------------------------------------------single product
+
+<?php
+/**
+ * The Template for displaying all single products
+ *
+ *
+ * ["product"]=> "559275507450" 
+ * ["post_type"]=> "product" 
+ * ["name"]=> "559275507450"
+ */
+global $wp_query; 
+$query_vars = $wp_query->query_vars; 
+//var_dump($query_vars); 
+$pdata = ombuyapi_item_details($query_vars['product']); 
+//var_dump($pdata); 
+
+//echo $pdata['item']['rootCatId']; echo '<br/>';
+//echo $pdata['item']['cid']; echo '<br/>';
+
+//$cdata=ombuyapi_category_get($pdata['item']['rootCatId']);
+//var_dump($cdata); 
+
+//$cadata=ombuyapi_category_get($pdata['item']['cid']);
+//var_dump($cadata);
+
+
+get_header( ); 
+
+?>
+
+<link rel="stylesheet" href="http://www.elevateweb.co.uk/wp-content/themes/radial/jquery.fancybox.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<link rel="stylesheet" href="<?php bloginfo('template_url')?>/css/owl.carousel.min.css">
+
+<!-- Slider Zooming related script Start-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+
+<script src="<?php echo get_template_directory_uri(); ?>/js/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://www.elevateweb.co.uk/wp-content/themes/radial/jquery.elevatezoom.min.js" type="text/javascript"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/owl.carousel.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+<div class="main-container shop-page left-slidebar">
+<div class="container">
+<div id="container">
+<div id="content" role="main">
+<nav class="woocommerce-breadcrumb">
+<a href="<?php echo home_url('/'); ?>"><strong> Home </strong></a><?php echo '/ <strong> Category: </strong>'; ?> 
+<?php if ($pdata['item']['rootCatId'] != '') { ?><a href="<?php echo home_url('/'); ?>product/search/?cat=<?php echo $pdata['item']['rootCatId']; ?>"><?php echo $pdata['item']['rootCatId']; ?></a><?php } ?>
+<?php if ($pdata['item']['cid'] != '') { ?><?php echo '/'; ?><a href="<?php echo home_url('/'); ?>product/search/?cat=<?php echo $pdata['item']['cid']; ?>"><?php echo $pdata['item']['cid']; ?></a><?php } ?>
+<?php //echo '/'; ?><?php //echo $pdata['item']['title']; ?>
+</nav>	
+	
+<div class="row">
+<div class="main-content col-md-12 col-sm-11"> 
+<div itemscope="" itemtype="http://schema.org/Product" id="product-51575" class="single-product post-51575 product type-product status-publish has-post-thumbnail first instock sale sold-individually shipping-taxable purchasable product-type-simple">
+<div class="row" id="single-product">
+
+<!-- ---------------- -->
+<!----- left column --->
+<!-- ---------------- -->
+<div class="col-sm-12 col-md-4 col-xs-12">
+<div class="product-detail-image style2">
+<?php if ( $pdata['item']['orginal_price'] > $pdata['item']['price'] ){ ?>
+ <span class="onsale">Sale!</span>
+<?php } ?>
+
+<!-- Zooming Work Start From Here -->   
+<div class="zoom-wrapper">
+<div class="zoom-left">
+<img style="border:1px solid #e8e8e6;" id="zoom_03" width="446" height="595" src="<?php echo $pdata['item']['pic_url'].'_350x350.jpg'; ?>" 
+data-zoom-image="<?php echo $pdata['item']['pic_url'].'_800x800.jpg' ?>" />
+
+<div id="gallery_01" style="width:500px; float:left; margin-top: 70px;">
+<?php foreach( $pdata['item']["item_imgs"] as $itemImg ) { ?> 
+<a href="#" class="elevatezoom-gallery" data-image="<?php echo $itemImg["url"].'_800x800.jpg'; ?>" data-zoom-image="<?php echo $itemImg["url"].'_800x800.jpg'; ?>"><img id="thumb" src="<?php echo $itemImg["url"]. '_80x80.jpg'; ?>" /></a>
+<?php } ?> 
+</div></div>
+<div style="clear:both;"></div>
+</div>
+<!-- Zooming Work End From Here -->
+<script type="text/javascript">
+jQuery(document).ready(function () {
+  $("#zoom_03").elevateZoom({ 
+	cursor: 'crosshair', 
+	zoomType: "inner",
+	imageCrossfade: true, 
+	loadingIcon: "http://www.elevateweb.co.uk/spinner.gif" 
+  });
+});
+jQuery('#gallery_01 a').click(function(){ 
+ var dImg = jQuery(this).attr('data-image');
+ var dZImg = jQuery(this).attr('data-zoom-image'); 
+ jQuery('#zoom_03').attr('src', dImg);
+ jQuery('#zoom_03').data('zoom-image', dZImg).elevateZoom({ 
+        cursor: 'crosshair', 
+	zoomType: "inner", 
+	imageCrossfade: true, 
+        loadingIcon: "http://www.elevateweb.co.uk/spinner.gif"
+ });
+});
+</script>
+</div>
+</div>
+
+<!-- ---------------- -->
+<!----- right column --->
+<!-- ---------------- -->
+<div class="col-sm-12 col-md-8 col-xs-12">
+<div class="summary entry-summary product-details-right style2">
+ <h1 class="product_title entry-title"><?php echo $pdata['item']['title']; ?></h1>
+ <!--<ul class="price-cont">
+   <li><p class="price"><ins>
+   <span class="woocommerce-Price-amount amount">
+    <span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;<?php echo $pdata['item']['price']; ?>
+   </span></ins>
+   </p>out of 5 based on</li>
+     <li>customer rating</li>
+ </ul>-->
+ <!----- Dummy customer review --->
+ <!--<p class="cust-revw">
+   <span class="amount">3.5</span> out of "5" based on <span class="amount">1</span> customer rating 
+ </p>
+ <p class="cust-revw">( 1 customer review )</p>-->
+
+ <div class="clear"></div>
+ <p class="shipping" style="margin-top:10px;">
+   <span class="orig-price">
+     <span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;<?php echo round($pdata['item']['price'],2); ?>
+   </span>
+   <ins>
+   <?php if ( $pdata['item']['orginal_price'] > $pdata['item']['price'] ){ ?>
+    <span class="dis-price">
+      <span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;<?php echo round($pdata['item']['orginal_price'],2); ?> 
+    </span>
+   <?php } ?>
+   <span class="woocommerce-Shipping-amount amount">Shipping : 
+   <span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;
+    <?php if( $pdata['item']['post_fee'] == 0 && $pdata['item']['express_fee'] == 0 && $pdata['item']['ems_fee'] == 0 ){ ?> Free 
+    <?php } else { ?>
+    <?php $prices = array( $pdata['item']['post_fee'], $pdata['item']['express_fee'], $pdata['item']['ems_fee'] ); ?>
+    <?php asort($prices); foreach($prices as $val){ if($val != 0){ echo $val; break; } } } ?>
+   </span>
+   </ins>
+ </p>
+
+ <div class="prod-props">
+ <?php $cnt = 1; $propIndx = 0; 
+       foreach($pdata['item']['props_list'] as $key => $value){ $keyArr = explode(':', $key); ?>
+ <?php //if propIndx is not same ?>
+ <?php if($propIndx != $keyArr[0]){ $cnt = 1; ?>
+ <?php if($propIndx != 0){ ?></ul><div style="clear:both;margin-bottom:10px;"></div><?php } ?>
+ <?php if($cnt == 1){ $propIndx = $keyArr[0]; $valArr = explode(':',$value); ?>
+  <p style="margin-bottom:3px;font-weight:800;"><?php echo $valArr[0]; ?></p><ul>
+    <?php if( array_key_exists($key,$pdata['item']["props_img"])) { ?>
+     <?php if( $pdata['item']["props_img"]["$key"] ){ //checks if image is not there ?>
+     <li data-prop="<?php echo $key;?>" style="border:1px solid #000;float:left;margin:3px;padding:5px;list-style:none;width:7%;height:50px;text-align:center;"><a  href="#" class="elevatezoom-gallery" data-image="<?php echo $pdata['item']["props_img"]["$key"].'_800x800.jpg'; ?>" data-zoom-image="<?php echo $pdata['item']["props_img"]["$key"].'_800x800.jpg'; ?>"><img src="<?php echo $pdata['item']["props_img"]["$key"] . '_50x50.jpg'; ?>" alt="<?php echo $valArr[1]; ?>" title="<?php echo $valArr[1]; ?>" /></a></li>
+     <?php } else { ?>
+     <li data-prop="<?php echo $key;?>" style="border:1px solid #000;float:left;margin:3px;padding:1px;list-style:none;width:7%;height:50px;text-align:center;font-size:10px;color:#f00;"><?php echo $valArr[1]; ?></li>
+     <?php } ?>
+    <?php } else { ?>
+     <li style="border:1px solid #000;float:left;margin:3px;padding:10px 0;list-style:none;width:7%;height:50px;text-align:center;font-size:11px;" data-prop="<?php echo $key; ?>"><?php echo $valArr[1]; ?></li>
+    <?php }} ?>
+ <?php } else { // if propIndex is the same ?>
+  <?php $valArr = explode(':',$value); ?>
+    <?php if( array_key_exists($key,$pdata['item']["props_img"])) { ?>
+     <?php if( $pdata['item']["props_img"]["$key"] ){ //checks if image is not there ?>
+     <li data-prop="<?php echo $key;?>" style="border:1px solid #000;float:left;margin:3px;padding:5px;list-style:none;width:7%;height:50px;text-align:center;"><a  href="#" class="elevatezoom-gallery" data-update="" data-image="<?php echo $pdata['item']["props_img"]["$key"].'_800x800.jpg'; ?>" data-zoom-image="<?php echo $pdata['item']["props_img"]["$key"].'_800x800.jpg'; ?>"><img src="<?php echo $pdata['item']["props_img"]["$key"] . '_50x50.jpg'; ?>" alt="<?php echo $valArr[1]; ?>" title="<?php echo $valArr[1]; ?>" /></a></li>
+     <?php } else { ?>
+     <li data-prop="<?php echo $key;?>" style="border:1px solid #000;float:left;margin:3px;padding:1px;list-style:none;width:7%;height:50px;text-align:center;font-size:10px;color:#f00;"><?php echo $valArr[1]; ?></li>
+     <?php } ?>
+    <?php } else { ?>
+     <li style="border:1px solid #000;float:left;margin:3px;padding:10px 0;list-style:none;width:7%;height:50px;text-align:center;font-size:11px;" data-prop="<?php echo $key; ?>"><?php echo $valArr[1]; ?></li>
+    <?php } ?>
+ <?php } $cnt++; } ?> 
+ <?php if($propIndx != 0){ ?></ul><div style="clear:both;margin-bottom:10px;"></div><?php } ?>    
+ </div>
+ <!--<hr style="padding:10px"/>-->
+<script type="text/javascript">
+jQuery('.prod-props li a').click(function(){ 
+ var dImg = jQuery(this).attr('data-image');
+ var dZImg = jQuery(this).attr('data-zoom-image'); 
+ jQuery('#zoom_03').attr('src', dImg);
+ jQuery('#zoom_03').data('zoom-image', dZImg).elevateZoom({ 
+        cursor: 'crosshair', 
+	zoomType: "inner", 
+	imageCrossfade: true, 
+        loadingIcon: "http://www.elevateweb.co.uk/spinner.gif"
+ });
+});
+</script>
+
+<div class="data-hidden" style="display: none;">
+<ul>
+<?php foreach($pdata["item"]["skus"]["sku"] as $skdata){ ?>
+<li data-price="<?php echo $skdata['price'];?>" data-original-price="<?php echo $skdata['orginal_price'];?>" 
+   data-properties="<?php echo $skdata['properties'];?>" data-quantity="<?php echo $skdata["quantity"];?>">
+  <?php echo $skdata["sku_id"]; ?>
+</li>
+<?php }?>
+</ul>
+</div>
+<div class="prop-hidden" style="display:none" sku-properties="" sku-id=""></div>
+
+</div>
+<div class="clear"></div>
+    
+<form class="cart" method="post" enctype="multipart/form-data">
+    <div class="quanty-box">
+        <div class="quantity">
+        
+        <input class="minus quantity-minus" type="button" value="-">
+         
+          <input type="number" data-step="1" data-min="1" data-max="1" name="quantity" value="1" title="Qty" class="input-text qty text" size="4">
+        <input class="plus quantity-plus" type="button" value="+">
+        
+        </div>
+        <span class="qty-availabel">
+	<p> (<?php echo $pdata['item']['num'];?> Available) </p>
+        </span>
+    </div>
+      
+  <!--<button type="submit" name="add-to-cart" value="51575" class="single_add_to_cart_button button alt">Add to cart</button>-->
+  <button type="button" name="add-to-cart" value="51575" class="single_add_to_cart_button button alt">Add to cart</button>
+</form>
+
+<div class="yith-wcwl-add-to-wishlist add-to-wishlist-51575">
+<div class="yith-wcwl-add-button show" style="display:block"> 
+<!--<a href="/P1013_API_integration/product/51575/?add_to_wishlist=51575" rel="nofollow" data-product-id="51575" data-product-type="simple" class="add_to_wishlist">Add to Wishlist</a>-->
+<a href="#" rel="nofollow" data-product-id="51575" data-product-type="simple" class="add_to_wishlist"><i class="fa fa-heart" aria-hidden="true"></i></a>
+<a href="#" rel="nofollow" data-product-id="51575" data-product-type="simple" class="add_to_wishlist"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+<img src="http://lab-1.sketchdemos.com/P1013_API_integration/wp-content/plugins/yith-woocommerce-wishlist/assets/images/wpspin_light.gif" class="ajax-loading" alt="loading" width="16" height="16" style="visibility:hidden">
+</div>
+
+<div class="yith-wcwl-wishlistaddedbrowse hide" style="display:none;"><span class="feedback">Product added!</span>
+<a href="http://lab-1.sketchdemos.com/P1013_API_integration/product/51575/" rel="nofollow"> Browse Wishlist</a></div>
+
+<div class="yith-wcwl-wishlistexistsbrowse hide" style="display:none"><span class="feedback">The product is already in the wishlist!</span>
+<a href="http://lab-1.sketchdemos.com/P1013_API_integration/product/51575/" rel="nofollow"> Browse Wishlist </a></div>
+
+<div style="clear:both"></div>
+<div class="yith-wcwl-wishlistaddresponse"></div>
+	
+</div>
+
+<div class="clear"></div>
+
+<div class="share">
+  <a class="print" data-element="single-product" href="javascript:print();"><i class="fa fa-print"></i> Print</a>
+  <a data-productid="51575" class="send-to-friend" href="#"><i class="fa fa-envelope-o"></i> Send to a friend</a>
+</div>
+        
+</div><!-- .summary -->
+</div>
+</div>
+
+	
+<div class="woocommerce-tabs wc-tabs-wrapper tab-details-product">
+
+<!-- Tab Implement -->    
+
+<div class="">
+ 
+    <div class="pro-desc-tab">   
+        <ul class="nav nav-pills">
+          <li class="active"><a data-toggle="pill" href="#desc">Description</a></li>
+          <li><a data-toggle="pill" href="#addi">Additional information</a></li>    
+        </ul>
+    
+         <div class="tab-content" id="description">
+    <div id="desc" class="tab-pane fade in active">
+        <div class = "col-md-4 col-xs-12 text-right desc-left">
+      <p><a href="<?php echo get_home_url().'/shop/search/?seller_nick='.$pdata['item']["seller_info"]["nick"]; ?>">VISIT STORE</a></p>
+      <?php if( ($pdata['item']['seller_info']['item_score']!='') || ($pdata['item']['seller_info']['score']!='') || ($pdata['item']['seller_info']['delivery_score']!='') ){ ?>
+      <p class="heading">ratings on taobao/tmall</p>
+      <?php } ?>
+      <!--<p><img height="100" width="200" src="<?php bloginfo('template_url')?>/images/api-imgpsh_fullsize.1.png"/> </p> -->
+
+     
+     
+      <div class="scores" name="scores" style="float: right;">
+           <?php if($pdata['item']['seller_info']['item_score']!=''){ ?>
+	<div class="rating"> <p>PRODUCT</p> <div id="rateYo1"></div> </div>
+        <?php } ?>
+        
+         <?php if($pdata['item']['seller_info']['score']!=''){ ?>
+        <div class="rating"> <p>SELLER</p> <div id="rateYo2"></div> </div> <?php } ?>
+        
+        <?php if($pdata['item']['seller_info']['delivery_score']!=''){ ?>
+        <div class="rating"> <p>SHIPPING</p> <div id="rateYo3"></div></div> <?php }?>
+      </div>
+     
+      <?php// var_dump($pdata);?>	
+      <?php //echo $pdata['item']['seller_info']['score'];?>
+
+      <?php if ( $pdata['item']["sales"] ): ?> 
+       <div class="qsold" style="width:100%;float:right; margin-top: 15px;">	
+        <p class="heading">QUANTITY SOLD ON TAOBAO/TMALL</p>
+        <p class="total-sold"><?php echo $pdata['item']["sales"]; ?></p>
+       </div>
+      <?php endif; ?>
+    </div>
+    <div class = "col-md-8 col-xs-12 text-left desc-rht">
+        <p class="heading">PRODUCT INFORMATION</p>
+      
+      <?php $addvalue=$pdata['item']["props"]; //var_dump($addvalue); ?>
+      <?php for($acnt=0; $acnt<count($addvalue); $acnt++){ ?>	
+      <p><?php echo $addvalue[$acnt]['name']; ?>: <?php echo $addvalue[$acnt]['value']; ?></p>
+      <?php } ?>
+    </div>
+    </div>
+        
+    <div id="addi" class="tab-pane fade">
+      <?php //echo $pdata['item']["desc"]; ?>
+    </div>      
+  </div>
+  
+    </div>
+  
+</div>
+<!-- End Tab Implement -->    
+
+<!-- Related Product Slider -->
+<?php
+$relat=ombuyapi_item_similar($pdata['item']['num_iid']); 
+echo '<br/>'.'NoPageCnt: '.count( $relat['items']['item'] ).'<br/>';
+$relat1=ombuyapi_item_similar_bypage($pdata['item']['num_iid'], 1); 
+echo '<br/>'.'ByPageCnt: '.count( $relat1['items']['item'] ).'<br/>'; 
+//var_dump($relat);
+?>
+<?php if ( count( $relat['items']['item'] ) > 0 ) { ?>
+ <div class="container mrgn-top">
+        <div class="service-section text-center">
+            <div class="row">
+                <div class="col-sm-12 col-xs-12 section-title">                    
+                    <h3>Related Products</h3>
+                </div>
+                <div class="col-sm-12 col-xs-12">
+                    <div class="service-slider">
+                        <div class="owl-carousel owl-theme owlTwo">
+                            <?php foreach($relat['items']['item'] as $value_re) { ?>
+                            <div class="item">
+                                <div class="service-box">
+                                <div class="img-box">                                    
+                                 <a href="<?php echo home_url('/').'product/'.$value_re['num_iid']; ?>"> <img src="<?php echo $value_re['pic_url'].'_270x270.jpg'; ?>"/></a>
+                                </div>
+                                <p><?php echo $value_re['title']; ?></p>
+                                <p class="price">  
+				<span class="orig-price">
+     				<span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;<?php echo round($value_re['promotion_price'],2); ?>
+   				</span>
+   				<?php if ( $value_re['price'] > $value_re['promotion_price'] ){ ?>
+    				<span class="dis-price" style="text-decoration:line-through;color:#999;">
+      				<span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;<?php echo round($value_re['price'],2); ?> 
+    				</span>
+   				<?php } ?>
+				</p>
+                                </div>
+                            </div>
+                            <?php }?>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<!-- End Related Product slider -->
+</div>
+
+<meta itemprop="url" content="http://lab-1.sketchdemos.com/P1013_API_integration/product/51575/">
+
+</div><!-- #product-51575 -->
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>           
+$('.owlTwo').owlCarousel({
+    loop:true,
+    lazyLoad : true,
+    margin:20,
+    nav:true,
+    navText : ['<i class="fa fa-long-arrow-left" aria-hidden="true"></i>','<i class="fa fa-long-arrow-right" aria-hidden="true"></i>'],    
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:4
+        },
+        1000:{
+            items:4
+        }
+    }   
+});
+</script>
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+   $('.quantity').on('click', '.plus', function(e) {
+       $input = $(this).prev('input.qty');
+       var val = parseInt($input.val());
+       $input.val( val+1 ).change();
+   });
+ 
+   $('.quantity').on('click', '.minus', 
+       function(e) {
+        $input = $(this).next('input.qty');
+        var val = parseInt($input.val());
+        if (val > 0) {
+          $input.val( val-1 ).change();
+        } 
+   });
+
+   $('a[data-toggle=pill]').click(function(){ //alert('this.id');
+      var target = $(this).attr('href'); //alert(target); 
+      if( target == "#addi" ){ 
+        var desc = '<?php $desc = $pdata["item"]["desc"]; 
+        $description = trim(preg_replace('/\n/', '', $desc)); echo $description; ?>';
+        $('#addi').html( desc );
+      } 
+   });
+
+});
+</script>
+
+<script>
+jQuery(function () { 
+  jQuery("#rateYo1").rateYo({
+    rating: <?php if($pdata['item']['seller_info']['item_score']){echo $pdata['item']['seller_info']['score'];} else{ echo '0';} ?>,
+    readOnly: true
+  });
+  jQuery("#rateYo2").rateYo({
+    rating: <?php if($pdata['item']['seller_info']['score']){ echo $pdata['item']['seller_info']["score"]; } else { echo '0'; } ?>,
+    readOnly: true
+  });
+  jQuery("#rateYo3").rateYo({
+    rating: <?php if($pdata['item']['seller_info']['delivery_score']){ echo $pdata['item']['seller_info']["delivery_score"]; } else { echo '0'; } ?>,
+    readOnly: true
+  });
+}); 
+</script>
+
+<script>
+jQuery('.prod-props ul li').click(function(){
+  var liphtml = jQuery(this).parent();
+  jQuery(liphtml).find('li').each(function(){ jQuery(this).css('border','1px solid #000'); });
+  jQuery(this).css('border','2px solid #FF9633'); 
+  var liProp = jQuery(this).attr('data-prop'); 
+  var skuProp = jQuery('.prop-hidden').attr('sku-properties');
+  var nskuProp = ''; var nskuID = '';
+  if( skuProp == ''){ 
+    nskuProp = nskuProp + liProp + ';'; jQuery('.prop-hidden').attr('sku-properties', nskuProp);
+  } else { //split skuprop to get all values
+   var skuPropArr = skuProp.split(';'); var liPropArr = liProp.split(':');
+   for(cnt=0;cnt<skuPropArr.length;cnt++){
+    var skuInnerPropArr = skuPropArr[cnt].split(':');
+    if(parseInt(skuInnerPropArr[0]) == parseInt(liPropArr[0])){ skuPropArr.splice(cnt, 1); }
+   }
+   // add the new element
+   for(cnt=0;cnt<skuPropArr.length;cnt++){ 
+     if(skuPropArr[cnt] != ''){ nskuProp += skuPropArr[cnt] + ';'; }
+   } 
+   nskuProp = nskuProp + liProp + ';'; jQuery('.prop-hidden').attr('sku-properties', nskuProp);
+  }
+  //check if the property is present in the list
+  var found = 0; 
+  jQuery('.data-hidden ul li').each(function(){ 
+    if( nskuProp.indexOf(jQuery(this).attr('data-properties')) > -1 ){ nskuID = jQuery(this).text(); //alert(nskuID);
+     jQuery('.shipping .orig-price').html('<span class="woocommerce-Price-currencySymbol">¥</span>&nbsp;&nbsp;'+ parseFloat(jQuery(this).attr('data-price')).toFixed(2));
+     jQuery('.quanty-box .qty-availabel p').text( '( ' + jQuery(this).attr('data-quantity') + ' Available )' ); 
+     jQuery('.prop-hidden').attr('sku-id', nskuID); found = 1;
+    }
+  });
+  //change the url for the product
+  if( found == 0 ){ //the url does not have any params 
+      var cUrl = '?sku-properties=' + jQuery('.prop-hidden').attr('sku-properties'); //alert(cUrl);
+      history.pushState(null,null,cUrl);
+  } else { //the url contains params
+      var cUrl = '?sku-properties=' + jQuery('.prop-hidden').attr('sku-properties') 
+		 + '&skuId=' + jQuery.trim( jQuery('.prop-hidden').attr('sku-id') ); //alert(cUrl);
+      history.pushState(null,null,cUrl);
+  }
+});
+</script>
+     
+<style>
+.minus { border:none; color:#fff; background-color:purple; height:30px; width:30px; }
+.plus { border:none; color:#fff; background-color:purple; height:30px; width:30px; }
+.qty { border:1px solid purple; color:purple; height:30px; }
+</style>
+
+<?php get_footer( ); ?>
+
+
+
+
+
+
 
