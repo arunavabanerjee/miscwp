@@ -69,6 +69,38 @@ get_header(); ?>
 	</div><!-- .container -->
 <?php get_footer(); ?>
 
+---------------------------------------------------------------------
+	
+	  global $post;
+  // get categories
+  $terms = wp_get_post_terms( $post->ID, 'product_cat' );
+  foreach ( $terms as $term ) $cats_array[] = $term->term_id;
+  $query_args = array( 'post__not_in' => array( $post->ID ), 'posts_per_page' => 5, 'no_found_rows' => 1, 'post_status' => 'publish', 'post_type' => 'product', 'tax_query' => array( 
+    array(
+      'taxonomy' => 'product_cat',
+      'field' => 'id',
+      'terms' => $cats_array
+    )));
+  $r = new WP_Query($query_args);
+		
+  if ($r->have_posts()) {
+    ?>
+    <ul class="product_list_widget">
+      <?php while ($r->have_posts()) : $r->the_post(); global $product; ?>
+        <li><a href="<?php the_permalink() ?>" title="<?php echo esc_attr(get_the_title() ? get_the_title() : get_the_ID()); ?>">
+    	<?php if (has_post_thumbnail()) the_post_thumbnail('shop_thumbnail'); else echo '<img src="'. woocommerce_placeholder_img_src() .'" alt="Placeholder" width="'.$woocommerce->get_image_size('shop_thumbnail_image_width').'" height="'.$woocommerce->get_image_size('shop_thumbnail_image_height').'" />'; ?>
+    	<?php if ( get_the_title() ) the_title(); else the_ID(); ?>
+        </a> <?php echo $product->get_price_html(); ?></li>
+      <?php endwhile; ?>
+    </ul>
+    <?php
+    // Reset the global $the_post as this query will have stomped on it
+    wp_reset_query();
+  }
+	
+	
+	
+	
 ------------------------------------------------------------------
 
 WooCommerce Single Product Page Default add_actions
