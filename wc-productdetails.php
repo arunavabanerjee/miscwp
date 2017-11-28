@@ -16,6 +16,21 @@ function wpdocs_my_search_form( $form ) {
 }
 add_filter( 'get_search_form', 'wpdocs_my_search_form' );
 
+------------------------------------------------------------
+
+/**
+ * Changes the redirect URL for the Return To Shop button in the cart.
+ *
+ * @return string
+ */
+function wc_empty_cart_redirect_url() {
+    return $_SERVER['HTTP_REFERER'];
+    return bloginfo('url');
+}
+add_filter( 'woocommerce_return_to_shop_redirect', 'wc_empty_cart_redirect_url' );
+
+
+
 ----------------------------------------------
 First, copy the  woocommerce.php file to your child theme and replace the content with the following code:
 
