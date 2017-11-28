@@ -115,8 +115,34 @@ get_header(); ?>
     // Reset the global $the_post as this query will have stomped on it
     wp_reset_query();
   }
-	
-	
+
+--------------------------------------------------------------------------
+/*STEP 1 - REMOVE ADD TO CART BUTTON ON PRODUCT ARCHIVE (SHOP) */
+
+ function remove_loop_button(){
+        remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+    }
+    add_action('init','remove_loop_button');
+
+    /*STEP 2 -ADD NEW BUTTON THAT LINKS TO PRODUCT PAGE FOR EACH PRODUCT */
+
+        add_action('woocommerce_after_shop_loop_item','replace_add_to_cart');
+        function replace_add_to_cart() {
+            global $product;
+            $link = $product->get_permalink();
+
+            echo '<p style="text-align:center;margin-top:10px;">';
+            $currentlang = get_bloginfo('language');
+            //for multilanguage
+            if($currentlang=="en-GB"){
+                echo do_shortcode('<a  href="'.$link.'" class="button addtocartbutton">View Product</a>');
+            } elseif($currentlang=="fr-FR"){
+                echo do_shortcode('<a  href="'.$link.'" class="button addtocartbutton">Voir le produit</a>');
+            }else {
+               echo do_shortcode('<a  href="'.$link.'" class="button addtocartbutton">Ver Producto</a>');   
+            }
+            echo '</p>';
+        }	
 	
 	
 ------------------------------------------------------------------
