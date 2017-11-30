@@ -214,3 +214,12 @@ add_action( 'woocommerce_review_before', 'woocommerce_review_display_gravatar', 
 add_action( 'woocommerce_review_before_comment_meta', 'woocommerce_review_display_rating', 10 );
 add_action( 'woocommerce_review_meta', 'woocommerce_review_display_meta', 10 );
 add_action( 'woocommerce_review_comment_text', 'woocommerce_review_display_comment_text', 10 );
+	
+----------------------------------------------------------------------------------------------------
+https://docs.woocommerce.com/wc-apidocs/package-WooCommerce.Functions.html
+https://docs.woocommerce.com/wc-apidocs/hook-docs.html 	
+	
+	
+	
+	
+	
