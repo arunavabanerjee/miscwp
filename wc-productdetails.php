@@ -218,7 +218,7 @@ add_action( 'woocommerce_review_comment_text', 'woocommerce_review_display_comme
 ----------------------------------------------------------------------------------------------------
 https://docs.woocommerce.com/wc-apidocs/package-WooCommerce.Functions.html
 https://docs.woocommerce.com/wc-apidocs/hook-docs.html 	
-	
+https://businessbloomer.com/woocommerce-tips/visual-hook-series/	
 	
 	
 	
