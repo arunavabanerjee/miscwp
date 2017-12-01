@@ -222,7 +222,8 @@ https://businessbloomer.com/woocommerce-tips/visual-hook-series/
 https://codex.wordpress.org/Plugin_API/Hooks_2.0.x
 https://docs.woocommerce.com/wc-apidocs/hook-docs.html
 http://hookr.io/plugins/yith-woocommerce-wishlist/#index=a 
-	
+http://hookr.io/plugins/yith-woocommerce-wishlist/2.0.8/all/#index=a
+http://hookr.io/plugins/yith-woocommerce-compare/2.0.9/all/#index=a
 
 	
 	
