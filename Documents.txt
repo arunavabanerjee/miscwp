@@ -1,4 +1,13 @@
 
+if (qtranxf_getLanguage() == 'en') {
+  // english
+  print "Hello world!"; 
+} elseif (qtranxf_getLanguage() == 'es') {
+  // spanish
+  print "Hola Mundo!";
+}
+
+==================================================================================
 add_action('after_setup_theme', 'remove_admin_bar');
  
 function remove_admin_bar() {
