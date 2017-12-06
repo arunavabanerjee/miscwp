@@ -1,4 +1,13 @@
 
+add_action('after_setup_theme', 'remove_admin_bar');
+ 
+function remove_admin_bar() {
+if (!current_user_can('administrator') && !is_admin()) {
+  show_admin_bar(false);
+}
+}
+
+===================================================================================
 $url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=DN17%202HG&destinations=DN17%202HJ&mode=driving&language=en-EN&sensor=false";
 
 $data   = @file_get_contents($url);
