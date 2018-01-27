@@ -1,3 +1,10 @@
+//category in URL
+One thing to note though, it's suggested to add a number at the beginning of your permalinks 
+to reduce the number of rewrite rules WordPress has to generate to resolve all of your URLs.
+The permalink strings for your examples would be:
+/%category%/%postname%
+/%category%/%post_id%
+/%category%/%post_id%/%postname%
 
 //order posts by category
 //category arranged from latest 
