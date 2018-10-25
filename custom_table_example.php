@@ -1,5 +1,6 @@
 <?php
 /*
+Url:https://mac-blog.org.ua/wordpress-custom-database-table-example-full/
 Plugin Name: Custom table example
 Description: example plugin to demonstrate wordpress capatabilities
 Plugin URI: http://mac-blog.org.ua/
