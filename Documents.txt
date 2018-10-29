@@ -1,4 +1,21 @@
 
+//custom pagination
+//functions.php
+// first create a function 
+function pagainate_link_function(){
+  global $wp_query;
+  $big = 999999999; // need an unlikely integer
+  //var_dump(get_pagenum_link( $big ));
+  var_dump(get_query_var('paged'));
+  echo paginate_links( array(
+    'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+    'format'  => '%#%',
+    'current' => max( 1, get_query_var('paged') ),
+    'total'   => $wp_query->max_num_pages
+  ));
+}
+
+
 ===============================================================
 uploads accept: https://stackoverflow.com/questions/11832930/html-input-file-accept-attribute-file-type-csv
 ===============================================================
