@@ -4,7 +4,18 @@ updating the temporary folder location in Wordpress, by editing the wpconfig.php
 and adding the following code:
 define( 'WP_TEMP_DIR', ABSPATH . 'wp-content/tmp/') ;
 This tells wordpress to use a folder within its existing directories, 
-and should also inherit the permissions of a parent folder.
+and should also inherit the permissions of a parent folder. 
+
+//move using wp handle upload
+//if ( ! function_exists( 'wp_handle_upload' ) ) { require_once( ABSPATH . 'wp-admin/includes/file.php' ); }
+//$uploadedfile = $_FILES['upload']['name'];
+//$upload_overrides = array( 'test_form' => false );
+//$movefile = wp_handle_upload( $uploadedfile, $upload_overrides);
+//$new_file_name = WP_TEMP_DIR."/$uploadedfile"; var_dump($new_file_name);
+//$result = move_uploaded_file($tmp_file_name,$new_file_name); var_dump($result);
+//if ( $movefile && ! isset( $movefile['error'] ) ) {
+// echo "File is valid, and was successfully uploaded.\n"; var_dump( $movefile );
+//} else { echo "Not uploaded.\n"; echo $movefile['error']; }
 
 
 //custom pagination
