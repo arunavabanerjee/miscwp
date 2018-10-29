@@ -1,4 +1,12 @@
 
+//setting a temp folder within wordpress
+updating the temporary folder location in Wordpress, by editing the wpconfig.php file 
+and adding the following code:
+define( 'WP_TEMP_DIR', ABSPATH . 'wp-content/tmp/') ;
+This tells wordpress to use a folder within its existing directories, 
+and should also inherit the permissions of a parent folder.
+
+
 //custom pagination
 //functions.php
 // first create a function 
