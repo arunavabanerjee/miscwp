@@ -1,4 +1,11 @@
 
+//date next year 
+$pdate_1 = new DateTime('2018-01-01');
+$eff_date_1 = date_format($pdate_1, 'Y-m-d'); echo $eff_date_1; 
+$exp_date_1 = date('Y-m-d', strtotime("$eff_date_1 +12 months")); echo $exp_date_1; 
+$exp_date_2 = date('Y-m-d', strtotime("$eff_date_1 +26 months")); echo $exp_date_2; 
+
+
 //setting a temp folder within wordpress
 updating the temporary folder location in Wordpress, by editing the wpconfig.php file 
 and adding the following code:
