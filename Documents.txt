@@ -1,4 +1,14 @@
 
+$list = $wpdb->get_results("SELECT * FROM `ins_policy_applicants` WHERE `id` IN (    
+                              SELECT `id` FROM `ins_policy_applicants` WHERE 
+                                     (`export_type` = 'pending' AND (`ins_class` <> 'FWMI' AND `ins_class` <> 'WCS')) OR
+                                     (`export_type` = 'completed' AND (`ins_class` <> 'FWMI' AND `ins_class` <> 'WCS'))
+                              )
+                             HAVING `userID` = 12
+                             ORDER BY `id` DESC");
+
+
+
 //date next year 
 $pdate_1 = new DateTime('2018-01-01');
 $eff_date_1 = date_format($pdate_1, 'Y-m-d'); echo $eff_date_1; 
