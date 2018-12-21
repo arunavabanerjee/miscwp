@@ -1,4 +1,11 @@
 
+http://www.fpdf.org/
+https://www.macronimous.com/resources/articles/creating-dynamic-pdf-files-using-html-php
+https://www.setasign.com/products/fpdi/demos/simple-demo/
+https://www.macronimous.com/resources/articles/creating-dynamic-pdf-files-using-html-php
+https://daveismyname.blog/writing-to-an-existing-pdf-with-php
+
+
 $list = $wpdb->get_results("SELECT * FROM `ins_policy_applicants` WHERE `id` IN (    
                               SELECT `id` FROM `ins_policy_applicants` WHERE 
                                      (`export_type` = 'pending' AND (`ins_class` <> 'FWMI' AND `ins_class` <> 'WCS')) OR
@@ -6,15 +13,12 @@ $list = $wpdb->get_results("SELECT * FROM `ins_policy_applicants` WHERE `id` IN 
                               )
                              HAVING `userID` = 12
                              ORDER BY `id` DESC");
-
-
-
+			     
 //date next year 
 $pdate_1 = new DateTime('2018-01-01');
 $eff_date_1 = date_format($pdate_1, 'Y-m-d'); echo $eff_date_1; 
 $exp_date_1 = date('Y-m-d', strtotime("$eff_date_1 +12 months")); echo $exp_date_1; 
 $exp_date_2 = date('Y-m-d', strtotime("$eff_date_1 +26 months")); echo $exp_date_2; 
-
 
 //setting a temp folder within wordpress
 updating the temporary folder location in Wordpress, by editing the wpconfig.php file 
