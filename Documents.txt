@@ -40,6 +40,7 @@ jQuery('.form-main').each(function(index){ //console.log(this); console.log(inde
    jQuery('#planamount'+(<?php echo $i; ?>+2)).val(data.planamount);
    var dobarr=data.dob.split("-")
    jQuery('#dateo'+(<?php echo $i; ?>+2)).val(dobarr[2]);
+   jQuery('#dateo'+(<?php echo $i; ?>+2)).prop('selectedIndex', dobarr[2]);
    jQuery('#montho'+(<?php echo $i; ?>+2)).val(dobarr[1]);
    jQuery('#yearo'+(<?php echo $i; ?>+2)).val(dobarr[0]);
    jQuery('#occupation'+(<?php echo $i; ?>+2)).val(data.occupation); 
