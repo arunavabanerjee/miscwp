@@ -5,6 +5,57 @@ https://www.setasign.com/products/fpdi/demos/simple-demo/
 https://www.macronimous.com/resources/articles/creating-dynamic-pdf-files-using-html-php
 https://daveismyname.blog/writing-to-an-existing-pdf-with-php
 
+=====================================================================================
+<?php if(isset($_REQUEST['ins'])){ $uid=$_REQUEST['ins']; ?>
+<?php $postall_id = $wpdb->get_results("SELECT *from ins_policy_applicants where insumem_ID=$uid"); //var_dump($postall_id); 
+      $worker_ids = count($postall_id); var_dump($worker_ids); ?> 
+<script>
+jQuery('.form-main').each(function(index){ //console.log(this); console.log(index);  
+  if(index > 0 && index <= <?php echo $worker_ids; ?>){ }
+  if(index > 0 && index > <?php echo $worker_ids; ?>){ jQuery(this).remove(); }
+});
+</script>
+
+<?php for($i=0; $i< $worker_ids; $i++){ ?>
+<script>
+   var data = <?php echo json_encode($postall_id[$i]); ?>; console.log(data);
+   var d = new Date(data.eff_date); var curr_year = d.getFullYear(); var curr_date = d.getDate(); var curr_month = d.getMonth() + 1; 
+   //console.log(d); //console.log(curr_year); //console.log(curr_date); //console.log(curr_month); //Months are zero based 
+   var curr__month = '';
+   if(curr_month == 1){ curr__month = 'January';} if(curr_month == 2){ curr__month = 'February';}
+   if(curr_month == 3){ curr__month = 'March';} if(curr_month == 4){ curr__month = 'April';}
+   if(curr_month == 5){ curr__month = 'May';} if(curr_month == 6){ curr__month = 'June';}
+   if(curr_month == 7){ curr__month = 'July';} if(curr_month == 8){ curr__month = 'August';}
+   if(curr_month == 9){ curr__month = 'September';} if(curr_month == 10){ curr__month = 'October';}
+   if(curr_month == 11){ curr__month = 'November';} if(curr_month == 12){ curr__month = 'December';}
+   
+   var effec_date = curr__month + ' ' + curr_date + ', ' + curr_year; //console.log(effec_date);
+   
+   jQuery('#wp_no'+(<?php echo $i; ?>+2)).val(data.wp_no); 
+   jQuery('#ins_person'+(<?php echo $i; ?>+2)).val(data.ins_person); 
+   jQuery('#eff_date'+(<?php echo $i; ?>+2)).val(effec_date); 
+   jQuery('#passport'+(<?php echo $i; ?>+2)).val(data.passport);
+   jQuery('#nationality'+(<?php echo $i; ?>+2)).val(data.nationality); 
+   jQuery('#plan_selection'+(<?php echo $i; ?>+2)).val(data.plan_selection);
+   jQuery('#planamount'+(<?php echo $i; ?>+2)).val(data.planamount);
+   var dobarr=data.dob.split("-")
+   jQuery('#dateo'+(<?php echo $i; ?>+2)).val(dobarr[2]);
+   jQuery('#montho'+(<?php echo $i; ?>+2)).val(dobarr[1]);
+   jQuery('#yearo'+(<?php echo $i; ?>+2)).val(dobarr[0]);
+   jQuery('#occupation'+(<?php echo $i; ?>+2)).val(data.occupation); 
+</script>
+<?php } ?>
+
+<script>
+jQuery('#company_information .mb-2 .add-more-btn').css('display','none');
+jQuery('#company_information .mb-2 .add_close').css('display','none');
+</script>
+<?php } //endif($_REQUEST['ins']) ?>
+
+
+
+
+=====================================================================================
 
 $list = $wpdb->get_results("SELECT * FROM `ins_policy_applicants` WHERE `id` IN (    
                               SELECT `id` FROM `ins_policy_applicants` WHERE 
