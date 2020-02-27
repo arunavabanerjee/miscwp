@@ -1,5 +1,16 @@
 =====================================
 https://docs.npmjs.com/
+====================================
+check the npm,node and npx version
+------------------------------------
+cn22@cnadmin:~/softwr/gulp$ npx -v
+6.9.0
+cn22@cnadmin:~/softwr/gulp$ npm -v
+6.9.0
+cn22@cnadmin:~/softwr/gulp$ node -v
+v10.16.3
+cn22@cnadmin:~/softwr/gulp$ 
+------------------------------------
 =====================================
 npm consists of three distinct components:
 a. the website
@@ -483,35 +494,79 @@ The Gulpfile contains the code to load installed packages and run different func
 The code performs two basic functions:
 Initialize your installed packages as Node modules.
 Create and run Gulp tasks.
-
-
 ===============================================
+gulpfile.js
+------------
+//=================================================
+//var gulp = require('gulp');
+//var cssnano = require('gulp-cssnano');
+//var sass = require('gulp-sass');
+//var concat = require('gulp-concat');
+//var uglify = require('gulp-uglify');
 
+//gulp.task('[Function Name]', function(){
+//   // Do stuff here
+//}
 
-====================================
-check the npm,node and npx version
-------------------------------------
-cn22@cnadmin:~/softwr/gulp$ npx -v
-6.9.0
-cn22@cnadmin:~/softwr/gulp$ npm -v
-6.9.0
-cn22@cnadmin:~/softwr/gulp$ node -v
-v10.16.3
-cn22@cnadmin:~/softwr/gulp$ 
-------------------------------------
-install gulp command line utility
--------
+//gulp.task('sass', function(){
+//   return gulp.src('app/style.scss')
+//      .pipe(sass())
+//      .pipe(cssnano())
+//      .pipe(gulp.dest('dist/css'));
+//});
 
+//gulp.task('js', function(){
+//    return gulp.src(['app/js/plugins/*.js', 'app/js/*.js'])
+//        .pipe(concat('all.js'))
+//        .pipe(uglify())
+//        .pipe(gulp.dest('dist'));
+//});
 
+//gulp.watch('app/*.scss', ['sass']);
+//gulp.watch('app/js/**/*.js', ['js']);
 
+//gulp.task('watch', function(){
+//  gulp.watch('app/*.scss', ['sass']);
+//  gulp.watch('app/js/**/*.js', ['js']);
+//});
 
+//gulp.task('default', ['sass', 'js', 'watch']);
+//===================================================
+const { src, dest, parallel } = require('gulp');
+const pug = require('gulp-pug');
+const less = require('gulp-less');
+const minifyCSS = require('gulp-csso');
+const concat = require('gulp-concat');
 
+function html() {
+  return src('client/templates/*.pug')
+    .pipe(pug())
+    .pipe(dest('build/html'))
+}
 
+function css() {
+  return src('client/templates/*.less')
+    .pipe(less())
+    .pipe(minifyCSS())
+    .pipe(dest('build/css'))
+}
 
+function js() {
+  return src('client/javascript/*.js', { sourcemaps: true })
+    .pipe(concat('app.min.js'))
+    .pipe(dest('build/js', { sourcemaps: true }))
+}
 
-
-
-
+exports.js = js;
+exports.css = css;
+exports.html = html;
+exports.default = parallel(html, css, js);
+=========================================================
+index.html
+-----------
+<link rel="stylesheet" href="dist/style.css">
+<script src="dist/all.js"></script>
+=========================================================
 
 
 
