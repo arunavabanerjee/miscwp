@@ -454,7 +454,14 @@ cn22@cnadmin:~$ npm config list --json
 ------
 ===============================================
 1. Create a folder - ~/softwr/prnpm 
-2. Generate npm init. 
+2. npm init - generates the package.json 
+3. npm install gulp-cli 
+   - installs gulp cli and other modules in node_modules
+   //modules required sass packaging
+4. npm install gulp-sass 
+5. npm install gulp-cssnano
+6. npm install gulp-concat
+7. npm install gulp-uglify
 
 
 
