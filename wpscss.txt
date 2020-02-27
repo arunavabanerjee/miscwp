@@ -458,11 +458,31 @@ cn22@cnadmin:~$ npm config list --json
 3. npm install gulp-cli 
    - installs gulp cli and other modules in node_modules
    //modules required sass packaging
-4. npm install gulp-sass 
-5. npm install gulp-cssnano
-6. npm install gulp-concat
-7. npm install gulp-uglify
-
+4.1. npm install gulp-sass 
+4.2. npm install gulp-cssnano
+4.3. npm install gulp-concat
+4.4. npm install gulp-uglify
+5. Set up your file structure
+Before we start creating files and folders, just know that there are many different ways to set up your file structure. 
+The approach that you’ll be using is good for basic projects, but the “right” setup will depend a lot on what your 
+particular needs are. This basic method will help you get a grasp on the basic functionality of all the moving parts. 
+Then you can build off or change the setup to your own liking in the future!
+Here’s what the project tree will look like:
+Root Project Folder
+ index.html
+ gulpfile.js
+ package.json
+ node_modules (folder)
+ app (folder)
+ script.js
+ style.scss
+ dist (folder)
+------------------------
+Create and configure your Gulpfile
+The Gulpfile contains the code to load installed packages and run different functions. 
+The code performs two basic functions:
+Initialize your installed packages as Node modules.
+Create and run Gulp tasks.
 
 
 
