@@ -485,8 +485,6 @@ Initialize your installed packages as Node modules.
 Create and run Gulp tasks.
 
 
-
-npm 
 ===============================================
 
 
