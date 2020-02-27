@@ -452,15 +452,20 @@ cn22@cnadmin:~$ npm config list --json
   "globalignorefile": "/usr/etc/npmignore"
 }
 ------
+===============================================
+1. Create a folder - ~/softwr/prnpm 
+2. Generate npm init. 
 
 
 
 
+npm 
+===============================================
 
 
-============
+====================================
 check the npm,node and npx version
-------------
+------------------------------------
 cn22@cnadmin:~/softwr/gulp$ npx -v
 6.9.0
 cn22@cnadmin:~/softwr/gulp$ npm -v
@@ -468,7 +473,7 @@ cn22@cnadmin:~/softwr/gulp$ npm -v
 cn22@cnadmin:~/softwr/gulp$ node -v
 v10.16.3
 cn22@cnadmin:~/softwr/gulp$ 
-------------------------------
+------------------------------------
 install gulp command line utility
 -------
 
