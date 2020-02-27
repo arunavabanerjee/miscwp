@@ -32,6 +32,151 @@ To publish and install packages to and from the public npm registry or your comp
 you must install Node.js and the npm command line interface using either a Node version manager or a Node installer.
 To download the latest version of npm, on the command line, run the following command:
 [sudo] npm install npm -g 
+-----
+cn22@cnadmin:~/softwr/gulp$ npm config list
+; cli configs
+metrics-registry = "https://registry.npmjs.org/"
+scope = ""
+user-agent = "npm/6.9.0 node/v10.16.3 linux x64"
+; node bin location = /usr/bin/node
+; cwd = /home/cn22/softwr/gulp
+; HOME = /home/cn22
+; "npm config ls -l" to show all defaults.
+-------
+cn22@cnadmin:~/softwr/gulp$ npm config ls -l
+; cli configs
+long = true
+metrics-registry = "https://registry.npmjs.org/"
+scope = ""
+user-agent = "npm/6.9.0 node/v10.16.3 linux x64"
+
+; default values
+access = null
+allow-same-version = false
+also = null
+always-auth = false
+audit = true
+audit-level = "low"
+auth-type = "legacy"
+before = null
+bin-links = true
+browser = null
+ca = null
+cache = "/home/cn22/.npm"
+cache-lock-retries = 10
+cache-lock-stale = 60000
+cache-lock-wait = 10000
+cache-max = null
+cache-min = 10
+cafile = undefined
+cert = null
+cidr = null
+color = true
+commit-hooks = true
+depth = null
+description = true
+dev = false
+dry-run = false
+editor = "vi"
+engine-strict = false
+fetch-retries = 2
+fetch-retry-factor = 10
+fetch-retry-maxtimeout = 60000
+fetch-retry-mintimeout = 10000
+force = false
+git = "git"
+git-tag-version = true
+global = false
+global-style = false
+globalconfig = "/usr/etc/npmrc"
+globalignorefile = "/usr/etc/npmignore"
+group = 1001
+ham-it-up = false
+heading = "npm"
+https-proxy = null
+if-present = false
+ignore-prepublish = false
+ignore-scripts = false
+init-author-email = ""
+init-author-name = ""
+init-author-url = ""
+init-license = "ISC"
+init-module = "/home/cn22/.npm-init.js"
+init-version = "1.0.0"
+json = false
+key = null
+legacy-bundling = false
+link = false
+local-address = undefined
+loglevel = "notice"
+logs-max = 10
+; long = false (overridden)
+maxsockets = 50
+message = "%s"
+; metrics-registry = null (overridden)
+node-options = null
+node-version = "10.16.3"
+noproxy = null
+offline = false
+onload-script = null
+only = null
+optional = true
+otp = null
+package-lock = true
+package-lock-only = false
+parseable = false
+prefer-offline = false
+prefer-online = false
+prefix = "/usr"
+preid = ""
+production = false
+progress = true
+proxy = null
+read-only = false
+rebuild-bundle = true
+registry = "https://registry.npmjs.org/"
+rollback = true
+save = true
+save-bundle = false
+save-dev = false
+save-exact = false
+save-optional = false
+save-prefix = "^"
+save-prod = false
+scope = ""
+script-shell = null
+scripts-prepend-node-path = "warn-only"
+searchexclude = null
+searchlimit = 20
+searchopts = ""
+searchstaleness = 900
+send-metrics = false
+shell = "/bin/bash"
+shrinkwrap = true
+sign-git-commit = false
+sign-git-tag = false
+sso-poll-frequency = 500
+sso-type = "oauth"
+strict-ssl = true
+tag = "latest"
+tag-version-prefix = "v"
+timing = false
+tmp = "/tmp"
+umask = 2
+unicode = false
+unsafe-perm = true
+update-notifier = true
+usage = false
+user = 0
+; user-agent = "npm/{npm-version} node/{node-version} {platform} {arch}" (overridden)
+userconfig = "/home/cn22/.npmrc"
+version = false
+versions = false
+viewer = "man"
+-----------
+
+
+
 
 
 
