@@ -1,0 +1,31 @@
+//function.php
+add_action('woocommerce_single_product_summary', 'func_woocommerce_display_shipping', 25);
+function func_woocommerce_display_shipping(){
+	$html = '<h3>Shipping Options</h3>';
+	$delivery_zones = WC_Shipping_Zones::get_zones();  
+	foreach ((array) $delivery_zones as $key => $the_zone ) { 
+		$shipping_zonename = $the_zone['zone_name']; 
+		$html .= '<div style="width:100%;float:left;margin:15px">';
+		$html .= '<span style="width:100%;float:left;border-bottom:1px solid #CCC">'.$shipping_zonename.'</span>';
+		
+		$shippingMethods = $the_zone["shipping_methods"]; 
+		foreach($shippingMethods as $shipMethod){
+			$shipMethodTitle = $shipMethod->get_method_title(); 
+			$shippingRate = $shipMethod->cost;
+		}
+		$html .= '<span style="width:40%;float:left;">'.$shipMethodTitle.'</span>
+				  <span style="width:30%;float:left;">'.
+					get_woocommerce_currency_symbol().$shippingRate.'</span>'; 
+		$html .= '</div>';
+    }
+	echo $html;
+}
+
+add_filter( 'woocommerce_shop_order_search_fields', 'woocommerce_shop_order_custom_search' );
+function woocommerce_shop_order_custom_search( $search_fields ) {
+  $search_fields[] = '_order_total';
+  $search_fields[] = '_payment_method';	
+  $search_fields[] = '_payment_method_title';
+	
+  return $search_fields;
+}
