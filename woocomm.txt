@@ -1,3 +1,4 @@
+
 //function.php
 add_action('woocommerce_single_product_summary', 'func_woocommerce_display_shipping', 25);
 function func_woocommerce_display_shipping(){
@@ -454,6 +455,137 @@ function mysite_cancelled($order_id) {
   $filename = 'cancelled_order_'.$order_id.'.html';	
   $order = wc_get_order(  $order_id );
   $ord_template = 'emails/admin-cancelled-order.php';	
+  $heading = 'Order Status Set To Cancelled'; $mailer='';		
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );
+  $uploaded = wp_upload_bits($filename, null, $mail_html);	  
+  //add_attachment_to_order($uploaded[$url],'Cancelled Order Attachment');	
+  //$note = __("Cancelled Order Attachment…".$uploaded['url']);	
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("Cancelled Order Attachment…").'</a>';
+  $order->add_order_note( $note ); 
+}
+
+//add_action('woocommerce_order_details_after_customer_details', 'add_attachment_to_order');
+//function add_attachment_to_order($url,$name){ 
+//   echo '<p><a href="'.$url.'">'.$name.'</a></p>'; 
+//}
+
+//add_action( 'shutdown', 'wpse_258451_shutdown' );
+//function wpse_258451_shutdown() {
+//  add_action( 'init', 'wpse_258451_init' );
+//}
+//function wpse_258451_init() {
+//  wp_die( 'I will never be called.' );
+//}
+
+/**
+ * get custom order html
+ */
+function get_custom_email_html( $order, $ord_template, $heading = false, $mailer ) {
+	$template = $ord_template;
+	return wc_get_template_html( $template, array(
+		'order'         => $order,
+		'email_heading' => $heading,
+		'sent_to_admin' => true,
+		'plain_text'    => false,
+		'email'         => $mailer,
+		'additional_content' => '',
+	));
+}
+
+
+//--------
+// -- create new templates in themes/curr_theme/woocommerce/emails
+// -- these can be customized as per requirement
+//-------- 
+add_action('woocommerce_order_status_pending', 'mysite_pending');
+function mysite_pending($order_id) {
+  $filename = 'pending_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/admin-new-order-note.php'; 
+  $heading = 'Order Status Set To Pending';	$mailer='';
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );
+  $uploaded = wp_upload_bits($filename, null, $mail_html);		
+  //add_attachment_to_order($uploaded[$url],'Pending Order Attachment'); 
+  //$note = __("Pending Order Attachment…".$uploaded['url']);
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("Pending Order Attachment…").'</a>';
+  $order->add_order_note( $note ); 
+}
+
+add_action('woocommerce_order_status_failed', 'mysite_failed');
+function mysite_failed($order_id) {
+  $filename = 'failed_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/admin-failed-order-note.php';			
+  $heading = 'Order Status Set To Failed'; $mailer='';
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );
+  $uploaded = wp_upload_bits($filename, null, $mail_html);
+  //add_attachment_to_order($uploaded[$url],'Failed Order Attachment');	
+  //$note = __("Failed Order Attachment…".$uploaded['url']);
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("Failed Order Attachment…").'</a>';	
+  $order->add_order_note( $note );
+}
+
+add_action('woocommerce_order_status_on-hold', 'mysite_hold');
+function mysite_hold($order_id) {
+  $filename = 'onhold_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/customer-on-hold-order-note.php';			
+  $heading = 'Order Status Set To On Hold';	$mailer='';
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );	
+  $uploaded = wp_upload_bits($filename, null, $mail_html); //var_dump($uploaded); exit;
+  //add_attachment_to_order($uploaded['url'],'On Hold Order Attachment');		
+  //$note = __("On Hold Order Attachment…".$uploaded['url']);
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("On Hold Order Attachment…").'</a>'; 
+  $order->add_order_note( $note );	
+}
+
+add_action('woocommerce_order_status_processing', 'mysite_processing');
+function mysite_processing($order_id) {
+  $filename = 'processing_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/customer-processing-order-note.php';	
+  $heading = 'Order Status Set To Processing'; $mailer='';	
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer ); 
+  $uploaded = wp_upload_bits($filename, null, $mail_html); //var_dump($uploaded); exit;
+  //add_attachment_to_order($uploaded['url'],'Priocessing Order Attachment');	
+  //$note = __("Processing Order Attachment…".$uploaded['url']);	
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("Processing Order Attachment…").'</a>';
+  $order->add_order_note( $note );	
+}
+
+add_action('woocommerce_order_status_completed', 'mysite_completed');
+function mysite_completed($order_id) {
+  $filename = 'completed_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/customer-completed-order-note.php';	
+  $heading = 'Order Status Set To Completed'; $mailer='';
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );
+  $uploaded = wp_upload_bits($filename, null, $mail_html);		
+  //add_attachment_to_order($uploaded[$url],'Completed Order Attachment');	
+  //$note = __("Completed Order Attachment…".$uploaded['url']);	
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("Completed Order Attachment…").'</a>'; 
+  $order->add_order_note( $note );	
+}
+
+add_action('woocommerce_order_status_refunded', 'mysite_refunded');
+function mysite_refunded($order_id) {
+  $filename = 'refunded_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/customer-refunded-order-note.php';	
+  $heading = 'Order Status Set To Refunded'; $mailer='';
+  $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );
+  $uploaded = wp_upload_bits($filename, null, $mail_html);		
+  //add_attachment_to_order($uploaded[$url],'Refunded Order Attachment');	
+  //$note = __("Refunded Order Attachment…".$uploaded['url']);	
+  $note = '<a href="'.$uploaded['url'].'" download>'.__("Refunded Order Attachment…").'</a>';
+  $order->add_order_note( $note ); 
+}
+
+add_action('woocommerce_order_status_cancelled', 'mysite_cancelled');
+function mysite_cancelled($order_id) {
+  $filename = 'cancelled_order_'.$order_id.'.html';	
+  $order = wc_get_order(  $order_id );
+  $ord_template = 'emails/admin-cancelled-order-note.php';	
   $heading = 'Order Status Set To Cancelled'; $mailer='';		
   $mail_html = 	get_custom_email_html( $order, $ord_template, $heading, $mailer );
   $uploaded = wp_upload_bits($filename, null, $mail_html);	  
