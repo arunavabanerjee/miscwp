@@ -2031,11 +2031,78 @@ function pj_admin_order_data_after_shipping_address_15() {
     echo '</strong></p>';
 }*/
 
+==============================
 
+/*add_action( 'woocommerce_admin_order_item_bulk_actions', 'pj_admin_order_data_after_shipping_address_9', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_9() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}
 
+add_action( 'woocommerce_admin_order_item_headers', 'pj_admin_order_data_after_shipping_address_10', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_10() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}
 
+add_action( 'woocommerce_admin_order_item_values', 'pj_admin_order_data_after_shipping_address_11', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_11() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}*/
 
+//
+// position before totals
+//------------------------
+/*add_action( 'woocommerce_admin_order_totals_after_discount', 'pj_admin_order_data_after_shipping_address_12', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_12() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}
+ 
+add_action( 'woocommerce_admin_order_totals_after_refunded', 'pj_admin_order_data_after_shipping_address_13', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_13() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}
 
+add_action( 'woocommerce_admin_order_totals_after_tax', 'pj_admin_order_data_after_shipping_address_14', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_14() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}
 
-
+add_action( 'woocommerce_admin_order_totals_after_total', 'pj_admin_order_data_after_shipping_address_15', 10, 3 ); 
+function pj_admin_order_data_after_shipping_address_15() { 
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}*/
 
