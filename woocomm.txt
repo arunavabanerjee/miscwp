@@ -2106,3 +2106,45 @@ function pj_admin_order_data_after_shipping_address_15() {
     echo '</strong></p>';
 }*/
 
+=================
+
+add_filter ('woocommerce_order_status_pending_to_processing', 'change_status_to_quote_if_applicable', 10, 2);
+function change_status_to_quote_if_applicable($order_id) { 
+    $order = new WC_Order($order_id);
+    $items = $order->get_items();
+    foreach ($items as $item) {
+        $product = get_product($item['product_id']);
+        if(product_available_for_quote($product)){
+            $order->update_status('quote');
+        }
+    }
+}
+
+
+add_filter ('woocommerce_order_status_processing_to_on_hold', 'change_status_to_quote_if_applicable_1', 10, 2);
+function change_status_to_quote_if_applicable_1($order_id) { 
+    $order = new WC_Order($order_id); var_dump($order); exit;
+    $items = $order->get_items();
+    foreach ($items as $item) {
+        $product = get_product($item['product_id']);
+        if(product_available_for_quote($product)){
+            $order->update_status('on_hold');
+        }
+    }
+}
+
+
+// define the woocommerce_order_status_changed callback
+function action_woocommerce_order_status_changed( $this_get_id, $this_status_transition_from, 
+						$this_status_transition_to, $instance ) { 
+        // make action magic happen here...
+        $order = new WC_Order($this_get_id); var_dump($order); exit;
+}; 
+// add the action 
+add_action( 'woocommerce_order_status_changed', 'action_woocommerce_order_status_changed', 10, 4 ); 
+
+
+
+
+
+
