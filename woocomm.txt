@@ -2133,7 +2133,6 @@ function change_status_to_quote_if_applicable_1($order_id) {
     }
 }
 
-
 // define the woocommerce_order_status_changed callback
 function action_woocommerce_order_status_changed( $this_get_id, $this_status_transition_from, 
 						$this_status_transition_to, $instance ) { 
@@ -2143,6 +2142,16 @@ function action_woocommerce_order_status_changed( $this_get_id, $this_status_tra
 // add the action 
 add_action( 'woocommerce_order_status_changed', 'action_woocommerce_order_status_changed', 10, 4 ); 
 
+add_action( 'woocommerce_process_shop_order_meta', 'woocommerce_process_shop_order', 10, 2 );
+function woocommerce_process_shop_order ( $order_id, $order ) {
+    global $post;
+    $wpc_shipment_id = get_post_meta($post->ID, 'wpc_shipment_id', true);
+    $wpc_shipment_title = get_post_meta($post->ID, 'wpc_shipment_title', true);
+    
+    echo '<p><strong>Tracking Number: '; 
+    echo '<a href="'.admin_url( 'post.php?post=' . $wpc_shipment_id ) . '&action=edit'.'">'.$wpc_shipment_title.'</a>';
+    echo '</strong></p>';
+}
 
 
 
