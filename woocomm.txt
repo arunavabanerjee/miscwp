@@ -2708,6 +2708,41 @@ function md_attachment_get(){
     die();
 }
 
+=====================================================================================
+functions.php
+--------------
+      $ord_template = 'emails/customer-on-hold-order-note.php';			
+      $heading = ''; $mailer='';
+      $mail_html = wc_get_template_html( $ord_template, array('order' => $order, 'email_heading' => $heading,
+                                            'sent_to_admin' => true, 'plain_text' => false, 'email' => $mailer, 'additional_content' => '',));
+    }
+    if($_POST['cstatus'] == "wc-completed"){ 
+      $ord_template = 'emails/customer-completed-order-note.php';	
+      $heading = ''; $mailer='';
+      $mail_html = wc_get_template_html( $ord_template, array('order' => $order, 'email_heading' => $heading,
+                                            'sent_to_admin' => true, 'plain_text' => false, 'email' => $mailer, 'additional_content' => '',));
+    }
+    if($_POST['cstatus'] == "wc-cancelled"){ 
+      $ord_template = 'emails/admin-cancelled-order-note.php';	
+      $heading = ''; $mailer='';		
+      $mail_html = wc_get_template_html( $ord_template, array('order' => $order, 'email_heading' => $heading,
+                                            'sent_to_admin' => true, 'plain_text' => false, 'email' => $mailer, 'additional_content' => '',));
+    }
+    if($_POST['cstatus'] == "wc-refunded"){ 
+      $ord_template = 'emails/customer-refunded-order-note.php';	
+      $heading = ''; $mailer='';
+      $mail_html = wc_get_template_html( $ord_template, array('order' => $order, 'email_heading' => $heading,
+                                            'sent_to_admin' => true, 'plain_text' => false, 'email' => $mailer, 'additional_content' => '',));
+    }
+    if($_POST['cstatus'] == "wc-failed"){ 
+      $ord_template = 'emails/admin-failed-order-note.php';			
+      $heading = ''; $mailer='';
+      $mail_html = wc_get_template_html( $ord_template, array('order' => $order, 'email_heading' => $heading,
+                                            'sent_to_admin' => true, 'plain_text' => false, 'email' => $mailer, 'additional_content' => '',));
+    }
+    echo $mail_html;    
+    die();
+}
 
 
 
