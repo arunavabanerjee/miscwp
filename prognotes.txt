@@ -1,0 +1,43 @@
+----------
+Ref:https://stackoverflow.com/questions/13767919/jquery-event-wont-fire-after-ajax-call
+----------
+When you remove an element and then replace it (via javascript), it loses any event bindings that were added 
+to it on page load. (This also applies to content added to the page after page load - i.e. ajax loaded content)
+There are several possible solutions for this.
+
+1) Encapsulate your "binding" code and call it both on page load and immediately after the element in question 
+gets added back to the page. For example:
+
+$(document).ready(function(){
+    // bind event handlers when the page loads.
+    bindButtonClick();
+});
+function bindButtonClick(){
+    $('.myClickableElement').click(function(){
+        ... event handler code ...
+    });
+}
+function updateContent(){
+    $.ajax({
+        url : '/ajax-endpoint.php',
+        data : {'onMyWay' : 'toServer'},
+        dataType : 'html',
+        type : 'post',
+        success : function(responseHtml){
+            // .myClickableElement is replaced with new (unbound) html element(s)
+            $('#container').html(responseHtml);
+
+            // re-bind event handlers to '.myClickableElement'
+            bindButtonClick();  
+        }
+    });
+}
+
+2) The more elegant way to handle this: use jQuery's .on() method. With it, you are able to bind event handlers 
+to elements other than the event target - i.e. an element that never gets removed from the page.
+
+$(document).ready(function(){
+    $('body').on('click','.myClickableElement',function(){
+        ... event handler code ....
+    });
+});
