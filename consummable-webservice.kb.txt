@@ -1,0 +1,63 @@
+Ref: https://stackoverflow.com/questions/2650785/basichttpbinding-vs-wshttpbinding-vs-webhttpbinding/2650899
+https://www.c-sharpcorner.com/blogs/difference-between-basichttpbinding-and-wshttpbinding1
+In WCF there are several different types of HTTP based bindings: BasicHttpBinding, WsHttpBinding, WebHttpBinding.
+
+webHttpBinding is the REST-style binding, where you basically just hit a URL and get back a truckload of XML or JSON from 
+the web service. basicHttpBinding and wsHttpBinding are two SOAP-based bindings which is quite different from REST. 
+SOAP has the advantage of having WSDL and XSD to describe the service, its methods, and the data being passed around in 
+great detail (REST doesn't have anything like that - yet). 
+On the other hand, you can't just browse to a wsHttpBinding endpoint with your browser and look at XML - you have to use 
+a SOAP client, e.g. the WcfTestClient or your own app.  So first decision must be: REST vs. SOAP (or you can expose both types 
+of endpoints from your service - that's possible, too).
+
+SOAP (formerly an acronym for Simple Object Access Protocol) is a messaging protocol specification for exchanging structured 
+information in the implementation of web services. Web Services Security (WS-Security, WSS) is an extension to SOAP to apply 
+security to Web services. It is a member of the Web service specifications and was published by OASIS. The protocol specifies 
+how integrity and confidentiality can be enforced on messages and allows the communication of various security token formats, 
+such as Security Assertion Markup Language (SAML), Kerberos, and X.509. - https://en.wikipedia.org/wiki/WS-Security 
+Its main focus is the use of XML Signature and XML Encryption to provide end-to-end security.
+
+Then, between basicHttpBinding and wsHttpBinding, there differences are as follows:
+basicHttpBinding is the very basic binding - SOAP 1.1, not much in terms of security, not much else in terms of features - 
+but compatible to just about any SOAP client out there --> great for interoperability, weak on features and security
+wsHttpBinding is the full-blown binding, which supports a ton of WS-* features and standards - it has lots more security 
+features, you can use sessionful connections, you can use reliable messaging, you can use transactional control - just a lot 
+more stuff, but wsHttpBinding is also a lot *heavier" and adds a lot of overhead to your messages as they travel across the 
+network
+
+For an in-depth comparison (including a table and code examples) between the two check out this codeproject article: 
+Differences between BasicHttpBinding and WsHttpBinding
+- https://www.codeproject.com/Articles/36396/Difference-between-BasicHttpBinding-and-WsHttpBind 
+Web Services Security (WS-Security, WSS) is an extension to SOAP to apply security to Web services. 
+It is a member of the Web service specifications and was published by OASIS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
