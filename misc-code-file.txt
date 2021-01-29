@@ -1,4 +1,61 @@
 
+/**
+ * Genesis Framework
+ *
+ * WARNING: This file is part of the core Genesis Framework. DO NOT edit
+ * this file under any circumstances. Please do all modifications
+ * in the form of a child theme.
+ *
+ * @package  Genesis
+ * @author   StudioPress
+ * @license  GPL-2.0-or-later
+ * @link     https://my.studiopress.com/themes/genesis/
+ */
+
+/**
+ * Calls the init.php file, but only if the child theme has not called it first.
+ *
+ * This method allows the child theme to load
+ * the framework so it can use the framework
+ * components immediately.
+ */
+require_once dirname( __FILE__ ) . '/lib/init.php';
+
+add_filter( 'manage_edit-shop_order_columns', 'add_user_company_column', 20 );
+function add_user_company_column( $columns ) {
+  $new_columns = array();
+  foreach ( $columns as $column_name => $column_info ) {
+   $new_columns[ $column_name ] = $column_info; 
+   if ( 'order_number' === $column_name ) {
+     $new_columns['order_custcompany'] = __( 'Name der Firma', 'my-textdomain' );
+   }	
+  }
+  return $new_columns;
+}
+
+add_action( 'manage_shop_order_posts_custom_column', 'add_user_company_column_content' );
+function add_user_company_column_content( $column ) {
+ global $post;
+ if ( 'order_custcompany' === $column ) {
+   $order = wc_get_order( $post->ID ); 
+   $user_id = $order->get_user_id(); 
+   if($user_id == 0){ echo 'Gast'; }
+   else{ 
+   	   //$wpuser = get_userdata($user_id); 
+   	   $billingCompanyName = get_user_meta( $user_id, 'billing_company', true );
+   	   if($billingCompanyName == ''){ echo 'Keiner'; }
+   	   else{ echo $billingCompanyName; }
+   }
+ }
+}
+
+add_filter( 'woocommerce_shop_order_search_fields', 'woocommerce_shop_order_custom_search' );
+function woocommerce_shop_order_custom_search( $search_fields ) {
+  $search_fields[] = 'billing_company';
+  return $search_fields;
+}
+
+
 ---------------------------------------------------------------------
 jQuery('input[name="exercise-name"]').keypress(function(e){
    //submission of form not by enter key
