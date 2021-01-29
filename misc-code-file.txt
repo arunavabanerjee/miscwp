@@ -1,0 +1,361 @@
+
+---------------------------------------------------------------------
+jQuery('input[name="exercise-name"]').keypress(function(e){
+   //submission of form not by enter key
+   if(e.keyCode == 13){ e.preventDefault(); }
+});
+jQuery('input[name="exercise-name"]').keyup(function(){
+   var $input = jQuery(this); 
+   var $label = $input.parent().find('label');
+   var $exercise_name = jQuery(this).val(); 
+   var $ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; 
+   var $loader = "<?php echo admin_url('images/loading.gif'); ?>";
+   if( $exercise_name.length >= 3){ //alert( $exercise_name ); return false;
+	jQuery.ajax({
+	   url: $ajaxurl, 
+           method: 'POST',
+           data: { 
+	    	//'form_data' : $form.serialize(),
+		'exercise_name': $exercise_name,
+		'action': 'fetch_exercise_list', 
+	   },
+           dataType: "json", 
+           beforeSend: function(){
+	       $label.children('img').remove();
+	       $label.append('<img src="'+ $loader +'" width=20 height=20 style="padding:3px;"/>');
+	   },
+	   success: function(response){ //console.log(response);
+	    	if( response.success ){
+		   $input.parent().find('ul[name="exercise-list"]').append(response.msg);
+		}else{
+		   $input.parent().append('<p style="color:#F00;">'+response.msg+'</p>');
+		}
+           },
+           error: function(xhr, status, error){
+               var err = eval("(" + xhr.responseText + ")");
+	       console.log(err.Message);
+	   },
+	   complete: function(){
+	       setTimeout(function(){ $label.children('img').remove(); }, 10);
+	   },
+	});
+     }
+});
+jQuery('ul[name="exercise-list"]').on('click', 'li', function(){
+   var $li_item = jQuery(this); 
+   var $li_id = $li_item.val();
+   var $li_name = $li_item.text(); 
+   //alert($li_id + ' ' + $li_name); return false; 
+   var $parent = jQuery('ul[name="exercise-list"]').parent(); 
+   var $inputfield = $parent.find('input[name="exercise-name"]'); 
+   $inputfield.val( $li_name ); $inputfield.attr('data-id', $li_id);
+}); 
+jQuery('.add-repetitions').click(function(){ 
+  var $add_rep = jQuery(this);
+  var $parent = $add_rep.parents('form'); 
+  //check the number of repetitions 
+  var $formsets = $parent.find('.formsets'); 
+  var $noOfRepetitions = $formsets.find('.form-row').length; 
+  if($noOfRepetitions == 10){ 
+    $formsets.find('p.repetition-error').remove();
+    $formsets.append('<p class="repetition-error" style="color:#F00;">Upto 10 Repetitions Per Exercise</p>');
+    return false; 
+  }
+  var repetitioncontent = '<div class="form-row" style="width:100%;min-height:75px;">'+
+	'<div class="form-group col-md-2 col-3 mb-0">'+
+	'<div id="div_id_exercise-nreps" class="form-group">'+ 
+		'<div class="">'+
+		'<input type="number" name="exercise-nreps" class="numberinput form-control" id="id_exercise-nreps">'+ 
+		'</div>'+ 
+	'</div></div>'+ 
+	'<div class="form-group col-md-3 col-3 mb-0">'+ 
+	'<div id="div_id_exercise-rep_unit" class="form-group">'+ 
+		'<div class="">'+ 
+		'<select name="exercise-rep_unit" class="select form-control" id="id_exercise-rep_unit" style="background:#FFF;width:100%;">'+
+			'<option value="Kilometers">Kilometers</option>'+
+			'<option value="Miles">Miles</option>'+ 
+			'<option value="Minutes">Minutes</option>'+ 
+			'<option value="Repetitions" selected="">Repetitions</option>'+ 
+			'<option value="Seconds">Seconds</option>'+ 
+			'<option value="Until Failure">Until Failure</option>'+
+		'</select></div>'+ 
+	'</div></div>'+
+	'<div class="form-group col-md-2 col-3 mb-0">'+
+	'<div id="div_id_exercise-weight" class="form-group">'+
+		'<div class="">'+ 
+		'<input type="number" name="exercise-weight" step="0.01" class="numberinput form-control" id="id_exercise-weight">'+ 
+		'</div>'+ 
+	'</div></div>'+ 
+	'<div class="form-group col-md-3 col-3 mb-0">'+ 
+	'<div id="div_id_exercise-weight_unit" class="form-group">'+ 
+		'<div class="">'+
+		'<select name="exercise-weight_unit" class="select form-control" id="id_exercise-weight_unit" style="background:#FFF;width:100%;">'+ 
+			'<option value="Body Weight">Body Weight</option>'+ 
+			'<option value="Kilometers Per Hour">Kilometers Per Hour</option>'+
+			'<option value="Miles Per Hour">Miles Per Hour</option>'+
+			'<option value="Plates">Plates</option>'+ 
+			'<option value="kg" selected="">kg</option>'+ 
+			'<option value="lb">lb</option>'+
+		'</select></div>'+
+	'</div></div>'+
+	'</div>';
+   $parent.find('.formsets').append(repetitioncontent);
+   return false; 
+});
+jQuery('.add-exercise-to-workout').click(function(){ //alert('this'); 
+   var $repetitions = new Array();
+   var $submitBtn = jQuery(this); 
+   var $parent = $submitBtn.parents('form'); 
+   var $formsets = $parent.find('.formsets');
+   //find the id of the exercise and workout
+   var $exerciseId = $parent.find('input[name="exercise-name"]').attr('data-id'); 
+   var $workoutId = $parent.find('input[name="workout-id"]').val(); 
+   //find parent divs for appending
+   var $mainparent = $submitBtn.parents('#workout-exercises');
+   var $topparent = $mainparent.parent();
+   var $workoutexlist = $topparent.find('.workout-exercise-list');
+
+   //find repetitions 
+   $cnt=0; $formsets.find('.form-row').each(function(){
+	var $formrow = jQuery(this);
+	var $nreps = $formrow.find('input[name="exercise-nreps"]').val(); 
+	var $nrepunit = $formrow.find('select[name="exercise-rep_unit"]').val(); 
+	var $nrepwt = $formrow.find('input[name="exercise-weight"]').val();
+	var $nrepwtunit = $formrow.find('select[name="exercise-weight_unit"]').val(); 
+	$repetitions[$cnt] = $nreps +'-'+ $nrepunit +'-'+ $nrepwt +'-'+$nrepwtunit; $cnt++;
+   });
+   var $repetitions_json = JSON.stringify(Object.assign({}, $repetitions)); 
+   var $ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; 
+   var $loader = "<?php echo admin_url('images/loading.gif'); ?>";
+   //alert($exerciseId + ' ' + $workoutId + ' ' + $repetitions_json); return false;
+   jQuery.ajax({
+	url: $ajaxurl, 
+        method: 'POST',
+        data: { 
+	    //'form_data' : $form.serialize(),
+	    'exercise_id': $exerciseId,
+	    'workout_id': $workoutId,
+	    'repetitions': $repetitions_json,
+	    'action': 'add_exercise_to_workout', 
+	},
+        dataType: "json", 
+        beforeSend: function(){
+	   $submitBtn.children('img').remove();
+	   $submitBtn.prepend('<img src="'+ $loader +'" width=20 height=20 style="padding:3px;"/>');
+	},
+	success: function(response){ //console.log(response);
+	   if( response.success ){
+	      $workoutexlist.append(response.msg); 
+              //reset the form 
+	      $parent.find('input[name="exercise-name"]').val('');
+	      $parent.find('input[name="exercise-name"]').attr('data-id', '');
+   	      $cnt=0; $formsets.find('.form-row').each(function(){ 
+		var $formrow = jQuery(this);
+                if($cnt == 0){ 
+	          $formrow.find('input[name="exercise-nreps"]').val('');  
+		  $formrow.find('input[name="exercise-weight"]').val('');
+	        } else{ $formrow.remove(); }
+		$cnt++;
+   	      });
+
+	   }else{
+	      $topparent.find('p').remove();	
+	      $mainparent.prepend('<p style="color:#F00;">'+response.msg+'</p>');
+	   }
+        },
+        error: function(xhr, status, error){
+           var err = eval("(" + xhr.responseText + ")");
+	   console.log(err.Message);
+	},
+	complete: function(){
+	   setTimeout( function(){ $submitBtn.children('img').remove(); }, 10);
+	},
+   });
+});
+jQuery('.workout-exercise-list').on('click', 'button[name="del-exercise"]', function(){ //alert('this');
+   var $delbuton = jQuery(this); 
+   var $parent = $delbuton.closest('.exercises-det');
+   var $exerciseId = $parent.find('input[name="exercise-id"]').val();
+   var $ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; 
+   var $loader = "<?php echo admin_url('images/loading.gif'); ?>";
+   //alert($exerciseId + ' '); return false; 
+   if(confirm("Delete Exercise - Continue (Y/N)?")){ 
+    jQuery.ajax({
+	url: $ajaxurl, 
+        method: 'POST',
+        data: { 
+	    //'form_data' : $form.serialize(),
+	    'exercise_id': $exerciseId,
+	    'action': 'del_exercise_from_workout', 
+	},
+        dataType: "json", 
+        beforeSend: function(){
+	   $delbuton.parent().children('img').remove();
+	   $delbuton.parent().prepend('<img src="'+ $loader +'" width=20 height=20 style="padding:3px;"/>');
+	},
+	success: function(response){ //console.log(response);
+	   if( response.success ){
+	      $parent.find('p.message').remove();	
+	      $parent.prepend('<p class="message" style="color:#F00;font-weight:bold;">'+response.msg+'</p>'); 
+	   }else{
+	      $parent.find('p.message').remove();	
+	      $parent.prepend('<p class="message" style="color:#F00;font-weight:bold;">'+response.msg+'</p>');
+	   }
+        },
+        error: function(xhr, status, error){
+           var err = eval("(" + xhr.responseText + ")");
+	   console.log(err.Message);
+	},
+	complete: function(){
+	   setTimeout( function(){ $parent.remove(); }, 2500);
+	},
+    });
+   } else{ return false; }
+});
+jQuery('.workout-exercise-list').on('click', 'button[name="view-exercise"]', function(){ //alert('this'); 
+   var $viewbuton = jQuery(this); 
+   var $parent = $viewbuton.closest('.exercises-det');
+   var $exerciseId = $parent.find('input[name="exercise-id"]').val();
+   var $workoutId = $parent.find('input[name="workout-id"]').val(); 
+   var $ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; 
+   var $loader = "<?php echo admin_url('images/loading.gif'); ?>"; 
+   var $modal = jQuery('body').find('#modal_viewexercisecenter'); 
+   var $modalBtn = $parent.find('button[name="open-modal"]');
+   //alert($exerciseId + ' ' + $workoutId); return false; 
+   jQuery.ajax({
+	url: $ajaxurl, 
+        method: 'POST',
+        data: { 
+	    //'form_data' : $form.serialize(),
+	    'exercise_id': $exerciseId,
+	    'workout_id': $workoutId,
+	    'action': 'view_workout_exercise_by_id', 
+	},
+        dataType: "json", 
+        beforeSend: function(){
+	   $viewbuton.parent().children('img').remove();
+	   $viewbuton.parent().append('<img src="'+ $loader +'" width=20 height=20 style="padding:3px;"/>');
+	},
+	success: function(response){ //console.log(response);
+	   if( response.success ){ 
+	      $modal.find('.modal-content').empty().append(response.msg); 
+	      $modalBtn.trigger('click');
+	   }else{
+	      $parent.find('p.message').remove();	
+	      $parent.prepend('<p class="message" style="color:#F00;font-weight:bold;">'+response.msg+'</p>');
+	   }
+        },
+        error: function(xhr, status, error){
+           var err = eval("(" + xhr.responseText + ")");
+	   console.log(err.Message);
+	},
+	complete: function(){
+	   setTimeout( function(){ $viewbuton.parent().children('img').remove(); }, 10);
+	},
+   });
+});
+jQuery(document).on('click', '.update-exercise-to-workout', function(){ 
+    alert('Update - Coming Soon'); return false;
+    var $repetitions = new Array(); 
+    var $updtBtn = jQuery(this); 
+    var $exerciseid = $updtBtn.parent().find('input[name="exercise-id"]').val();
+    var $workoutid = $updtBtn.parent().find('input[name="workout-id"]').val(); 
+    var $exerciseDet = $updtBtn.parents('.exercises-details');
+    var $formsets = $exerciseDet.find('.formsets'); 
+   //find repetitions 
+   $cnt=0; $formsets.find('.form-row').each(function(){
+	var $formrow = jQuery(this);
+	var $nreps = $formrow.find('input[name="exercise-nreps"]').val(); 
+	var $nrepunit = $formrow.find('select[name="exercise-rep_unit"]').val(); 
+	var $nrepwt = $formrow.find('input[name="exercise-weight"]').val();
+	var $nrepwtunit = $formrow.find('select[name="exercise-weight_unit"]').val(); 
+	$repetitions[$cnt] = $nreps +'-'+ $nrepunit +'-'+ $nrepwt +'-'+$nrepwtunit; $cnt++;
+   });
+   var $repetitions_json = JSON.stringify(Object.assign({}, $repetitions));     
+   var $ajaxurl = "<?php echo admin_url('admin-ajax.php'); ?>"; 
+   var $loader = "<?php echo admin_url('images/loading.gif'); ?>";
+   //alert($exerciseid + ' ' + $workoutid + ' ' + $repetitions_json); return false;
+   jQuery.ajax({
+	url: $ajaxurl, 
+        method: 'POST',
+        data: { 
+	    //'form_data' : $form.serialize(),
+	    'exercise_id': $exerciseid,
+	    'workout_id': $workoutid,
+	    'repetitions': $repetitions_json,
+	    'action': 'update_exercise_to_workout', 
+	},
+        dataType: "json", 
+        beforeSend: function(){
+	   $updtBtn.children('img').remove();
+	   $updtBtn.prepend('<img src="'+ $loader +'" width=20 height=20 style="padding:3px;"/>');
+	},
+	success: function(response){ console.log(response);
+	   if( response.success ){
+	      $formsets.empty().append(response.msg); 
+	   }else{
+	      $formsets.find('p').remove();	
+	      $formsets.append('<p style="color:#F00;">'+response.msg+'</p>');
+	   }
+        },
+        error: function(xhr, status, error){
+           var err = eval("(" + xhr.responseText + ")");
+	   console.log(err.Message);
+	},
+	complete: function(){
+	   setTimeout( function(){ $updtBtn.children('img').remove(); }, 10);
+	},
+   });
+});
+jQuery(document).on('click', '.add-more-repetitions', function(){ //alert('this');
+  var $add_rep = jQuery(this);
+  var $exerciseDet = $add_rep.parents('.exercises-details');
+  var $formsets = $exerciseDet.find('.formsets'); 
+  //check the number of repetitions  
+  var $noOfRepetitions = $formsets.find('.form-row').length; 
+  if($noOfRepetitions == 10){ 
+    $formsets.find('p.repetition-error').remove();
+    $formsets.append('<p class="repetition-error" style="color:#F00;">Upto 10 Repetitions Per Exercise</p>');
+    return false; 
+  }
+  var repetitioncontent = '<div class="form-row" style="width:100%;min-height:75px;">'+
+	'<div class="form-group col-md-2 col-3 mb-0" style="width:21%;padding:0 7px;">'+
+	'<div id="div_id_exercise-nreps" class="form-group">'+ 
+		'<div class="">'+
+		'<input type="number" name="exercise-nreps" class="numberinput form-control" id="id_exercise-nreps">'+ 
+		'</div>'+ 
+	'</div></div>'+ 
+	'<div class="form-group col-md-3 col-3 mb-0" style="width:30%; padding:0 7px;">'+ 
+	'<div id="div_id_exercise-rep_unit" class="form-group">'+ 
+		'<div class="">'+ 
+		'<select name="exercise-rep_unit" class="select form-control" id="id_exercise-rep_unit" style="background:#FFF;width:100%;">'+
+			'<option value="Kilometers">Kilometers</option>'+
+			'<option value="Miles">Miles</option>'+ 
+			'<option value="Minutes">Minutes</option>'+ 
+			'<option value="Repetitions" selected="">Repetitions</option>'+ 
+			'<option value="Seconds">Seconds</option>'+ 
+			'<option value="Until Failure">Until Failure</option>'+
+		'</select></div>'+ 
+	'</div></div>'+
+	'<div class="form-group col-md-2 col-3 mb-0" style="width:21%; padding:0 7px;">'+
+	'<div id="div_id_exercise-weight" class="form-group">'+
+		'<div class="">'+ 
+		'<input type="number" name="exercise-weight" step="0.01" class="numberinput form-control" id="id_exercise-weight">'+ 
+		'</div>'+ 
+	'</div></div>'+ 
+	'<div class="form-group col-md-3 col-3 mb-0" style="width:25%; padding:0 7px;">'+ 
+	'<div id="div_id_exercise-weight_unit" class="form-group">'+ 
+		'<div class="">'+
+		'<select name="exercise-weight_unit" class="select form-control" id="id_exercise-weight_unit" style="background:#FFF;width:100%;">'+ 
+			'<option value="Body Weight">Body Weight</option>'+ 
+			'<option value="Kilometers Per Hour">Kilometers Per Hour</option>'+
+			'<option value="Miles Per Hour">Miles Per Hour</option>'+
+			'<option value="Plates">Plates</option>'+ 
+			'<option value="kg" selected="">kg</option>'+ 
+			'<option value="lb">lb</option>'+
+		'</select></div>'+
+	'</div></div>'+
+	'</div>';
+   $formsets.append(repetitioncontent);
+   return false; 
+});
