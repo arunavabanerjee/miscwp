@@ -65,18 +65,18 @@ if(isset($_GET['t']) && !empty($_GET['t'])){
 
 require_once __DIR__ . '/../vendor/twilio-php-main/src/Twilio/autoload.php';
 /*use \Twilio\Rest\Client;
-$acctnSID  = "ACd0be536740bbb939494ab5713ee3b2b7";
-$acctnTok  = "2a53ddf7e858bd9821d3c3dcbd7d7c7f";
-$conversation_resource = "CHbff3357ff51646b78a5040e3cea1c70c"; 
-$main_phno = "+14043415407";*/ 
+$acctnSID  = "";
+$acctnTok  = "";
+$conversation_resource = ""; 
+$main_phno = "";*/ 
 
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 
 // Required for all Twilio access tokens
-//$twilioAccountSid = 'ACd0be536740bbb939494ab5713ee3b2b7';
-//$twilioApiKey = 'SK09f2468fba633f28759f07166dd986a4';
-//$twilioApiSecret = 'if0yKQgp19t5OHPVYi8ZkpxdHmI4tMFM'; 
+//$twilioAccountSid = '';
+//$twilioApiKey = '';
+//$twilioApiSecret = ''; 
 
 // Required for all Twilio access tokens
 $twilioAccountSid = get_option('twilio_acctn_sid'); 
