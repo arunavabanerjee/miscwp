@@ -522,16 +522,16 @@ function onFullScreenChange(){ //console.log(window);
       var callcontentWrap = document.getElementsByClassName('call-content-wrap')[0]; 
 
       //change the styles accordingly. 
-      uservideo.style.width = '42%'; 
+      uservideo.style.width = '103px'; 
       uservideo.style.float = 'left';	
-      uservideo.style.position = 'relative';
+      uservideo.style.position = 'absolute';
       uservideo.style.height = 'auto';
       uservideo.style.overflow = 'auto';
       //local media 
       //localmedia.style.width = '80%'; 
       //localmedia.style.height = '430px'; 
       //remote media
-      remotemedia.style.width = '50%'; 
+      remotemedia.style.width = '100%'; 
       remotemedia.style.height = 'auto'; 
   }      
 
