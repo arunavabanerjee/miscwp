@@ -7,7 +7,34 @@ new Date().toLocaleString("en-US", {timeZone: "America/New_York"}); // 8/19/2020
 new Date().toLocaleString("en-US", {hour: '2-digit', hour12: false, timeZone: "America/New_York"});  // 09 (just the hour)
 new Date().toLocaleString("en-US", {year: 'numeric', month: '2-digit', day: '2-digit', timeZone: "America/New_York"});
 
-
+// check inputs 
+function checkName() {
+    var x = document.myForm;
+    var input = x.name.value;
+    var errMsgHolder = document.getElementById('nameErrMsg');
+    if (input.length < 5) {
+        errMsgHolder.innerHTML =
+            'Please enter a name with at least 5 letters';
+        return false;
+    } else if (!(/^\S{3,}$/.test(input))) {
+        errMsgHolder.innerHTML =
+            'Name cannot contain whitespace';
+        return false;
+    }else if(!(/^[a-zA-Z]+$/.test(input)))
+    {
+        errMsgHolder.innerHTML=
+                'Only alphabets allowed'
+    }
+    else if(!(/^(?:(\w)(?!\1\1))+$/.test(input)))
+    {
+        errMsgHolder.innerHTML=
+                'per 3 alphabets allowed'
+    }
+    else {
+        errMsgHolder.innerHTML = '';
+        return undefined;
+    }       
+}
 
 
 
